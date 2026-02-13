@@ -97,6 +97,7 @@ app.post('/api/models', async (req, res) => {
 app.post('/api/chat', async (req, res) => {
     try {
         const { message, apiKey, model, history } = req.body;
+        console.log(`[CHAT] Request for model: ${model}`);
         if (!apiKey) return res.status(400).json({ error: "Missing API Key" });
 
         const genAI = new GoogleGenerativeAI(apiKey);
@@ -108,8 +109,13 @@ app.post('/api/chat', async (req, res) => {
         const chat = aiModel.startChat({ history: history || [] });
         const result = await chat.sendMessage(message);
         const response = await result.response;
-        res.json({ reply: response.text() });
-    } catch (error) { res.status(500).json({ error: error.message }); }
+        const text = response.text();
+        console.log(`[CHAT] AI responded successfully (${text.substring(0, 20)}...)`);
+        res.json({ reply: text });
+    } catch (error) { 
+        console.error(`[CHAT_ERROR] ${error.message}`);
+        res.status(500).json({ error: error.message }); 
+    }
 });
 
 server.listen(port, '0.0.0.0', () => {
