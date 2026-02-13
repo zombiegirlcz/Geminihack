@@ -106,8 +106,8 @@
         <div class="term-header" id="term-handle">
             <span class="text-[10px] orbitron font-bold">RENEGADE_TERM</span>
             <div class="flex gap-2">
-                <span class="term-btn" onclick="setTermState('full')">MAX</span>
-                <span class="term-btn" onclick="setTermState('bubble')">MIN</span>
+                <span class="term-btn" onclick="event.stopPropagation(); setTermState('full')">MAX</span>
+                <span class="term-btn" onclick="event.stopPropagation(); setTermState('bubble')">MIN</span>
             </div>
         </div>
         <div id="terminal" class="flex-1 bg-black"></div>
@@ -185,11 +185,15 @@
         function setTermState(state) {
             container.className = state;
             currentStatus = state;
+            
             if (state === 'full') {
                 container.style.left = "0"; container.style.top = "0";
                 term.resize(Math.floor(window.innerWidth / 8), Math.floor(window.innerHeight / 18));
             } else if (state === 'mini') {
+                container.style.width = "350px"; container.style.height = "250px";
                 term.resize(45, 15);
+            } else if (state === 'bubble') {
+                container.style.width = "60px"; container.style.height = "60px";
             }
             socket.emit('terminal-resize', { cols: term.cols, rows: term.rows });
         }
