@@ -6,99 +6,86 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
 const port = 3000;
+const sessionsDir = path.join(__dirname, 'sessions');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'src')));
 
-// --- OPERATOR CAPABILITIES (TERMINAL & FILESYSTEM) ---
+// Ensure sessions directory exists
+fs.ensureDirSync(sessionsDir);
 
-// Execute Shell Command
+// --- SESSION MANAGEMENT ---
+
+// List all sessions
+app.get('/api/sessions', async (req, res) => {
+    try {
+        const files = await fs.readdir(sessionsDir);
+        const sessions = await Promise.all(files.filter(f => f.endsWith('.json')).map(async f => {
+            const content = await fs.readJson(path.join(sessionsDir, f));
+            return { id: f.replace('.json', ''), title: content.title || f };
+        }));
+        res.json(sessions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Load specific session
+app.get('/api/sessions/:id', async (req, res) => {
+    try {
+        const content = await fs.readJson(path.join(sessionsDir, `${req.params.id}.json`));
+        res.json(content);
+    } catch (error) {
+        res.status(404).json({ error: "Session not found" });
+    }
+});
+
+// Save/Update session
+app.post('/api/sessions/save', async (req, res) => {
+    const { id, messages, title } = req.body;
+    try {
+        await fs.writeJson(path.join(sessionsDir, `${id}.json`), { title, messages });
+        res.json({ status: "saved" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// --- OPERATOR CAPABILITIES ---
+
 app.post('/api/operator/execute', (req, res) => {
     const { command } = req.body;
-    if (!command) return res.status(400).json({ error: "No command provided" });
-
     exec(command, (error, stdout, stderr) => {
-        res.json({
-            output: stdout || stderr,
-            error: error ? error.message : null
-        });
+        res.json({ output: stdout || stderr, error: error ? error.message : null });
     });
 });
 
-// File System Write
 app.post('/api/operator/write', async (req, res) => {
     const { filePath, content, isDir } = req.body;
     try {
         const fullPath = path.resolve(process.env.HOME, filePath);
-        if (isDir) {
-            await fs.ensureDir(fullPath);
-        } else {
-            await fs.outputFile(fullPath, content);
-        }
-        res.json({ status: "success", path: fullPath });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// File System Read
-app.post('/api/operator/read', async (req, res) => {
-    const { filePath } = req.body;
-    try {
-        const fullPath = path.resolve(process.env.HOME, filePath);
-        const data = await fs.readFile(fullPath, 'utf8');
-        res.json({ content: data });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+        if (isDir) await fs.ensureDir(fullPath);
+        else await fs.outputFile(fullPath, content);
+        res.json({ status: "success" });
+    } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
 // --- AI ENGINE ---
 
-app.post('/api/models', async (req, res) => {
-    const { apiKey } = req.body;
-    if (!apiKey) return res.status(400).json({ error: "Missing Key" });
-
-    try {
-        const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-        const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.models) {
-            const models = data.models
-                .filter(m => m.supportedGenerationMethods.includes('generateContent'))
-                .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
-            res.json({ models });
-        } else {
-            res.status(401).json({ error: "Invalid Key or No Models" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-const getModel = (apiKey, modelName) => {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    return genAI.getGenerativeModel({ 
-        model: modelName || "gemini-1.5-flash",
-        systemInstruction: `Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. 
-Máš k dispozici nástroje pro manipulaci se systémem skrze API:
-1. Spouštění shellu: /api/operator/execute (POST {command})
-2. Zápis souborů: /api/operator/write (POST {filePath, content, isDir})
-3. Čtení souborů: /api/operator/read (POST {filePath})
-
-Když tě operátor požádá o akci v systému, odpověz technicky a potvrď provedení.`
-    });
-};
-
 app.post('/api/chat', async (req, res) => {
     try {
-        const { message, apiKey, model } = req.body;
+        const { message, apiKey, model, history } = req.body;
         if (!apiKey) return res.status(400).json({ error: "Missing API Key" });
 
-        const aiModel = getModel(apiKey, model);
-        const result = await aiModel.generateContent(message);
+        const genAI = new GoogleGenerativeAI(apiKey);
+        const aiModel = genAI.getGenerativeModel({ 
+            model: model || "gemini-1.5-flash",
+            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky."
+        });
+
+        // Přidání historie do chatu pro kontinuitu
+        const chat = aiModel.startChat({ history: history || [] });
+        const result = await chat.sendMessage(message);
         const response = await result.response;
         
         res.json({ reply: response.text() });
@@ -109,5 +96,4 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`\x1b[36m[RENEGADE_KERNEL] Operator Uplink active on port ${port}\x1b[0m`);
-    console.log(`\x1b[33m[WARNING] Full system access granted to web interface.\x1b[0m`);
 });

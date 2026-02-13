@@ -2,223 +2,195 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RENEGADE KERNEL</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
     <style>
         body {
-            background: radial-gradient(circle at top, #1a1a2e 0%, #0f0c29 50%, #000000 100%);
-            font-family: 'JetBrains+Mono', monospace;
-            color: #e0e0e0;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #0d0d0d;
+            color: #00f2fe;
+            font-family: 'JetBrains Mono', monospace;
         }
-        .header-font { font-family: 'Orbitron', sans-serif; }
-        .neon-border {
-            box-shadow: 0 0 15px rgba(123, 47, 247, 0.3), inset 0 0 5px rgba(0, 242, 254, 0.2);
-            border: 1px solid rgba(123, 47, 247, 0.4);
-        }
-        .renegade-gradient {
-            background: linear-gradient(135deg, #7b2ff7 0%, #00f2fe 100%);
-        }
-        .chat-container {
-            height: calc(100vh - 180px);
-            scrollbar-width: thin;
-        }
-        .message-user { background: rgba(123, 47, 247, 0.1); border-right: 2px solid #7b2ff7; }
-        .message-renegade { background: rgba(0, 242, 254, 0.05); border-left: 2px solid #00f2fe; }
-        .modal { background: rgba(0,0,0,0.9); backdrop-blur: 20px; }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .neon-border { border: 1px solid #7b2ff7; box-shadow: 0 0 10px #7b2ff7; }
+        .neon-text { text-shadow: 0 0 5px #00f2fe; }
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        .sidebar.closed { transform: translateX(-100%); }
+        .chat-container::-webkit-scrollbar { width: 5px; }
+        .chat-container::-webkit-scrollbar-thumb { background: #7b2ff7; border-radius: 10px; }
     </style>
 </head>
-<body class="flex flex-col">
+<body class="h-screen flex overflow-hidden">
 
-    <!-- SETTINGS MODAL -->
-    <div id="setup-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden modal">
-        <div class="w-full max-w-md bg-gray-900 border border-purple-500/50 rounded-2xl p-6 shadow-2xl">
-            <h2 class="header-font text-xl text-transparent bg-clip-text renegade-gradient mb-6">KERNEL_SETUP</h2>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] text-purple-400 block mb-1">GOOGLE_AI_API_KEY</label>
-                    <input type="password" id="api-key-input" class="w-full bg-black border border-purple-500/30 rounded-lg p-3 text-sm focus:border-cyan-400 outline-none" placeholder="Vlož svůj klíč...">
-                </div>
-                
-                <div>
-                    <label class="text-[10px] text-purple-400 block mb-1">CORE_MODEL_SELECTION</label>
-                    <select id="model-select" class="w-full bg-black border border-purple-500/30 rounded-lg p-3 text-sm focus:border-cyan-400 outline-none">
-                        <option value="">Nejdříve vlož API klíč...</option>
-                    </select>
-                    <button id="fetch-models" class="text-[9px] text-cyan-400 mt-2 hover:underline">📡 SKENOVAT DOSTUPNÉ MODELY</button>
-                </div>
-
-                <button id="save-config" class="w-full renegade-gradient py-4 rounded-xl font-bold text-white shadow-lg hover:opacity-90 transition-all uppercase tracking-widest text-sm">
-                    Initialize Core
-                </button>
+    <!-- SIDEBAR (Chat History) -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 bg-[#1a1a1a] border-r border-[#7b2ff7] z-50 closed lg:static lg:transform-none">
+        <div class="p-4 flex flex-col h-full">
+            <h2 class="orbitron text-xl font-bold mb-6 neon-text">CHATS</h2>
+            <button onclick="newChat()" class="mb-4 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold hover:bg-[#9d50bb] transition">NEW UPLINK</button>
+            <div id="session-list" class="flex-1 overflow-y-auto space-y-2">
+                <!-- Sessions will be loaded here -->
+            </div>
+            <div class="mt-auto pt-4 border-t border-[#333]">
+                <input type="password" id="apiKey" placeholder="API KEY" class="w-full bg-black border border-[#7b2ff7] p-2 text-xs mb-2">
+                <select id="modelSelect" class="w-full bg-black border border-[#7b2ff7] p-2 text-xs"></select>
             </div>
         </div>
     </div>
 
-    <!-- HEADER -->
-    <header class="p-6 border-b border-purple-900/50 flex justify-between items-center bg-black/20 backdrop-blur-md">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 renegade-gradient rounded-lg flex items-center justify-center cursor-pointer" id="open-settings">
-                <svg viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z"></path>
-                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
-                </svg>
+    <!-- MAIN INTERFACE -->
+    <div class="flex-1 flex flex-col min-w-0">
+        <!-- HEADER -->
+        <header class="p-4 border-b border-[#7b2ff7] flex justify-between items-center bg-[#0d0d0d]">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-[#7b2ff7] text-2xl">☰</button>
+                <h1 class="orbitron text-2xl font-bold neon-text">RENEGADE_KERNEL_v1.0</h1>
             </div>
-            <div>
-                <h1 class="header-font text-xl font-bold tracking-tighter text-transparent bg-clip-text renegade-gradient">
-                    RENEGADE <span class="text-white">KERNEL</span>
-                </h1>
-                <p class="text-[10px] text-purple-400 uppercase tracking-widest" id="active-model-display">UNIT_STANDALONE</p>
+            <div class="hidden sm:block text-xs text-[#7b2ff7] opacity-70 uppercase tracking-widest">Operator Uplink Active</div>
+        </header>
+
+        <!-- CHAT AREA -->
+        <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 chat-container bg-[#050505]">
+            <div class="text-center p-10 opacity-50">
+                <p class="orbitron text-xl">WAKE UP, OPERATOR...</p>
+                <p class="text-xs mt-2">Initialize system by sending a command.</p>
             </div>
-        </div>
-        <div class="text-right">
-            <span class="text-[10px] block text-cyan-400 font-bold">CORE STATUS</span>
-            <span class="text-xs text-green-400" id="status-text">● READY</span>
-        </div>
-    </header>
+        </main>
 
-    <!-- CHAT AREA -->
-    <main id="chat-area" class="flex-grow p-4 overflow-y-auto chat-container space-y-4">
-        <!-- Zprávy se generují zde -->
-    </main>
-
-    <!-- INPUT AREA -->
-    <footer class="p-4 bg-black/40 backdrop-blur-xl border-t border-purple-900/30">
-        <div class="relative flex items-center space-x-2">
-            <input type="text" id="user-input" 
-                class="w-full bg-gray-900/50 border border-purple-500/30 rounded-full py-4 px-6 focus:outline-none focus:border-cyan-400 text-white placeholder-gray-500 neon-border"
-                placeholder="Awaiting command...">
-            <button id="send-btn" class="p-4 rounded-full renegade-gradient text-white shadow-lg">
-                <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
-                </svg>
-            </button>
-        </div>
-    </footer>
+        <!-- INPUT AREA -->
+        <footer class="p-4 bg-[#0d0d0d] border-t border-[#7b2ff7]">
+            <div class="max-w-4xl mx-auto flex gap-4">
+                <input type="text" id="userInput" placeholder="ENTER COMMAND..." 
+                    class="flex-1 bg-black border border-[#7b2ff7] p-3 focus:outline-none focus:ring-1 focus:ring-[#00f2fe]"
+                    onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()" class="bg-[#7b2ff7] px-6 py-2 orbitron font-bold hover:bg-[#9d50bb] transition text-white">EXEC</button>
+            </div>
+        </footer>
+    </div>
 
     <script>
-        const chatArea = document.getElementById('chat-area');
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const modal = document.getElementById('setup-modal');
-        const apiKeyInput = document.getElementById('api-key-input');
-        const modelSelect = document.getElementById('model-select');
-        const saveBtn = document.getElementById('save-config');
-        const openSettings = document.getElementById('open-settings');
-        const modelDisplay = document.getElementById('active-model-display');
-        const fetchBtn = document.getElementById('fetch-models');
+        let currentSessionId = 'session_' + Date.now();
+        let chatHistory = [];
 
-        async function fetchModels() {
-            const key = apiKeyInput.value.trim();
-            if (!key) return alert("Vlož API klíč!");
-            
-            fetchBtn.innerText = "⏳ SKENUJI...";
+        async function loadSessions() {
+            const res = await fetch('/api/sessions');
+            const sessions = await res.json();
+            const list = document.getElementById('session-list');
+            list.innerHTML = '';
+            sessions.reverse().forEach(s => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-2 text-sm border-b border-[#333] hover:bg-[#222] truncate";
+                btn.innerText = s.title;
+                btn.onclick = () => loadSession(s.id);
+                list.appendChild(btn);
+            });
+        }
+
+        async function loadSession(id) {
+            const res = await fetch(`/api/sessions/${id}`);
+            const data = await res.json();
+            currentSessionId = id;
+            chatHistory = data.messages;
+            renderHistory();
+            if(window.innerWidth < 1024) toggleSidebar();
+        }
+
+        function newChat() {
+            currentSessionId = 'session_' + Date.now();
+            chatHistory = [];
+            document.getElementById('chat-container').innerHTML = '';
+            if(window.innerWidth < 1024) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('closed');
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('chat-container');
+            container.innerHTML = '';
+            chatHistory.forEach(msg => {
+                appendMessage(msg.role === 'user' ? 'OPERATOR' : 'KERNEL', msg.parts[0].text, msg.role === 'user');
+            });
+        }
+
+        function appendMessage(sender, text, isUser) {
+            const container = document.getElementById('chat-container');
+            const div = document.createElement('div');
+            div.className = `p-3 rounded-lg ${isUser ? 'bg-[#1a1a1a] ml-auto max-w-[80%]' : 'bg-[#0d0d0d] border border-[#7b2ff7] mr-auto max-w-[80%]'}`;
+            div.innerHTML = `<span class="text-[10px] orbitron ${isUser ? 'text-[#7b2ff7]' : 'text-[#00f2fe]'}">${sender}</span><p class="mt-1">${text}</p>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            const apiKey = document.getElementById('apiKey').value;
+            const model = document.getElementById('modelSelect').value;
+
+            if (!text || !apiKey) return;
+
+            appendMessage('OPERATOR', text, true);
+            input.value = '';
+
             try {
-                const response = await fetch('/api/models', {
+                const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ apiKey: key })
+                    body: JSON.stringify({ message: text, apiKey, model, history: chatHistory })
                 });
-                const data = await response.json();
-                
-                if (data.models) {
-                    modelSelect.innerHTML = '';
-                    data.models.forEach(m => {
-                        const opt = document.createElement('option');
-                        opt.value = m.id;
-                        opt.innerText = m.name + " (" + m.id + ")";
-                        modelSelect.appendChild(opt);
+                const data = await res.json();
+
+                if (data.reply) {
+                    appendMessage('KERNEL', data.reply, false);
+                    chatHistory.push({ role: 'user', parts: [{ text: text }] });
+                    chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
+                    
+                    // Save session
+                    await fetch('/api/sessions/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            id: currentSessionId, 
+                            title: chatHistory[0].parts[0].text.substring(0, 30), 
+                            messages: chatHistory 
+                        })
                     });
-                    fetchBtn.innerText = "✅ SKENOVÁNÍ DOKONČENO";
-                } else {
-                    alert("Chyba: " + data.error);
-                    fetchBtn.innerText = "❌ SKENOVÁNÍ SELHALO";
+                    loadSessions();
                 }
             } catch (e) {
-                alert("Uplink failed.");
-                fetchBtn.innerText = "📡 SKENOVAT DOSTUPNÉ MODELY";
+                appendMessage('ERROR', 'Link unstable: ' + e.message, false);
             }
         }
 
-        fetchBtn.onclick = fetchModels;
-        apiKeyInput.onblur = () => { if(apiKeyInput.value) fetchModels(); };
-
-        // Inicializace nastavení
-        let config = JSON.parse(localStorage.getItem('renegade_config')) || { apiKey: '', model: 'gemini-1.5-flash' };
-        
-        if (!config.apiKey) modal.classList.remove('hidden');
-        modelDisplay.innerText = config.model.toUpperCase();
-
-        openSettings.onclick = () => modal.classList.remove('hidden');
-
-        saveBtn.onclick = async () => {
-            config.apiKey = apiKeyInput.value.trim();
-            config.model = modelSelect.value;
-            localStorage.setItem('renegade_config', JSON.stringify(config));
-            modelDisplay.innerText = config.model.toUpperCase();
+        // Initialize models
+        async function init() {
+            const apiKey = localStorage.getItem('renegade_key');
+            if(apiKey) document.getElementById('apiKey').value = apiKey;
             
-            // Pošleme konfiguraci na server
-            await fetch('/api/config', {
+            document.getElementById('apiKey').onchange = (e) => {
+                localStorage.setItem('renegade_key', e.target.value);
+                fetchModels(e.target.value);
+            };
+
+            if(apiKey) fetchModels(apiKey);
+            loadSessions();
+        }
+
+        async function fetchModels(key) {
+            const res = await fetch('/api/models', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(config)
+                body: JSON.stringify({ apiKey: key })
             });
-            
-            modal.classList.add('hidden');
-            addMessage("SYSTÉM REKONFIGUROVÁN. CORE_READY.", "renegade");
-        };
-
-        function addMessage(text, role) {
-            const div = document.createElement('div');
-            div.className = role === 'user' ? 'message-user p-4 rounded-xl max-w-[85%] ml-auto' : 'message-renegade p-4 rounded-xl max-w-[85%]';
-            
-            const content = document.createElement('p');
-            content.className = 'text-sm leading-relaxed';
-            content.innerText = text;
-            
-            div.appendChild(content);
-            chatArea.appendChild(div);
-            chatArea.scrollTop = chatArea.scrollHeight;
+            const data = await res.json();
+            const select = document.getElementById('modelSelect');
+            select.innerHTML = data.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
         }
 
-        async function handleSend() {
-            const text = userInput.value.trim();
-            if (!text || !config.apiKey) return;
-
-            addMessage(text, 'user');
-            userInput.value = '';
-
-            const loadingId = 'L' + Date.now();
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = loadingId;
-            loadingDiv.className = 'message-renegade p-4 rounded-xl max-w-[85%] opacity-50';
-            loadingDiv.innerText = 'WAITING_FOR_UPLINK...';
-            chatArea.appendChild(loadingDiv);
-
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, ...config })
-                });
-                const data = await response.json();
-                loadingDiv.remove();
-                
-                if (data.reply) addMessage(data.reply, 'renegade');
-                else addMessage("ERROR: " + (data.error || "Uplink Failed"), "renegade");
-            } catch (e) {
-                loadingDiv.innerText = 'CRITICAL_FAILURE';
-            }
-        }
-
-        sendBtn.onclick = handleSend;
-        userInput.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
+        init();
     </script>
 </body>
 </html>
