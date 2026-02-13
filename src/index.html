@@ -16,14 +16,10 @@
         .sidebar { transition: transform 0.3s ease-in-out; left: 0; }
         .sidebar.closed { transform: translateX(-100%); }
         
-        /* Modal Overlay */
-        #config-modal {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
-            display: none;
-        }
+        #config-modal { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px); display: none; }
+        #sidebar-overlay { transition: opacity 0.3s ease; }
+        #sidebar-overlay.active { display: block; opacity: 1; }
 
-        /* Draggable Terminal System */
         #term-container { z-index: 1000; position: fixed; touch-action: none; }
         #term-container.bubble {
             width: 60px; height: 60px; border-radius: 50%; background: #7b2ff7;
@@ -53,27 +49,24 @@
     <div id="config-modal" class="fixed inset-0 z-[2000] flex items-center justify-center p-4">
         <div class="bg-[#1a1a1a] border-2 border-[#7b2ff7] w-full max-w-md p-6 shadow-[0_0_30px_#7b2ff7]">
             <h2 class="orbitron text-2xl font-bold mb-6 neon-text text-center">KERNEL_UPLINK_CONFIG</h2>
-            
             <div class="space-y-4">
                 <div>
                     <label class="block text-[10px] orbitron mb-1 text-[#7b2ff7]">MASTER_API_KEY</label>
                     <input type="password" id="modalApiKey" onchange="fetchModels(this.value)" class="w-full bg-black border border-[#7b2ff7] p-3 text-sm focus:ring-1 focus:ring-[#00f2fe] outline-none">
                 </div>
-                
                 <div>
                     <label class="block text-[10px] orbitron mb-1 text-[#7b2ff7]">NEURAL_MODEL_SELECT</label>
                     <select id="modalModelSelect" class="w-full bg-black border border-[#7b2ff7] p-3 text-sm outline-none">
                         <option value="">AWAITING_API_KEY...</option>
                     </select>
                 </div>
-
                 <button onclick="saveConfig()" class="w-full bg-[#7b2ff7] p-3 orbitron font-bold text-white hover:bg-[#9d50bb] transition mt-4">INITIALIZE_CONNECTION</button>
             </div>
         </div>
     </div>
 
     <!-- SIDEBAR OVERLAY -->
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
 
     <!-- SIDEBAR -->
     <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 bg-[#1a1a1a] border-r border-[#7b2ff7] z-50 closed lg:static lg:transform-none">
@@ -82,7 +75,6 @@
             <button onclick="sideAction(newChat)" class="mb-2 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold text-xs hover:bg-[#9d50bb]">NEW_SESSION</button>
             <button onclick="sideAction(openConfig)" class="mb-2 w-full p-2 border border-[#7b2ff7] text-[#7b2ff7] orbitron font-bold text-xs hover:bg-[#7b2ff7] hover:text-white">CONFIG_SYSTEM</button>
             <button onclick="location.reload()" class="mb-4 w-full p-2 border border-[#333] text-gray-500 orbitron font-bold text-xs hover:text-[#00f2fe]">REBOOT_UI</button>
-            
             <div id="session-list" class="flex-1 overflow-y-auto space-y-1"></div>
         </div>
     </div>
@@ -96,26 +88,17 @@
             </div>
         </header>
         <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-[#050505]"></main>
-        <!-- ANTI-PASSWORD FILLER TRAP -->
-        <input type="text" style="display:none" aria-hidden="true">
-        <input type="password" style="display:none" aria-hidden="true">
-
+        
+        <input type="text" style="display:none" aria-hidden="true"><input type="password" style="display:none" aria-hidden="true">
         <div class="p-4 bg-[#0d0d0d] border-t border-[#7b2ff7]">
             <div class="max-w-4xl mx-auto flex gap-4">
-                <input type="text" 
-                    id="r_k_cmd_input_v2" 
-                    name="q_random_field_99" 
-                    autocomplete="one-time-code" 
-                    spellcheck="false" 
-                    placeholder="COMMAND_INPUT..." 
-                    onkeypress="if(event.key === 'Enter') sendMessage()"
-                    class="flex-1 bg-black border border-[#7b2ff7] p-3 outline-none focus:ring-1 focus:ring-[#00f2fe] text-sm">
+                <input type="text" id="r_k_cmd_input_v2" autocomplete="off" spellcheck="false" placeholder="COMMAND_INPUT..." onkeypress="if(event.key === 'Enter') sendMessage()" class="flex-1 bg-black border border-[#7b2ff7] p-3 outline-none focus:ring-1 focus:ring-[#00f2fe] text-sm">
                 <button onclick="sendMessage()" class="bg-[#7b2ff7] px-6 py-2 orbitron font-bold hover:bg-[#9d50bb] text-white text-xs">EXEC</button>
             </div>
         </div>
     </div>
 
-    <!-- RENEGADE TERMINAL SYSTEM -->
+    <!-- TERMINAL -->
     <div id="term-container" class="bubble" style="top: 80px; right: 20px;">
         <div class="term-header" id="term-handle">
             <span class="text-[10px] orbitron font-bold">RENEGADE_TERM</span>
@@ -129,188 +112,104 @@
 
     <script>
         const socket = io();
-        const term = new Terminal({
-            fontFamily: 'JetBrains Mono, monospace', fontSize: 11,
-            theme: { background: '#000', foreground: '#00f2fe' }, cursorBlink: true
-        });
+        const term = new Terminal({ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, theme: { background: '#000', foreground: '#00f2fe' }, cursorBlink: true });
         term.open(document.getElementById('terminal'));
         socket.on('terminal-output', data => term.write(data));
         term.onData(data => socket.emit('terminal-input', data));
+
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            const isClosed = sb.classList.toggle('closed');
+            if (isClosed) { ov.classList.add('hidden'); } else { ov.classList.remove('hidden'); }
+        }
+        function sideAction(fn) { fn(); if (window.innerWidth < 1024) toggleSidebar(); }
 
         async function fetchModels(key) {
             if (!key) return;
             const select = document.getElementById('modalModelSelect');
             select.innerHTML = '<option value="">SCANNING_NETWORK...</option>';
             try {
-                const res = await fetch('/api/models', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ apiKey: key })
-                });
+                const res = await fetch('/api/models', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ apiKey: key }) });
                 const data = await res.json();
                 if (data.models) {
                     select.innerHTML = data.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
                     const savedModel = localStorage.getItem('renegade_model');
                     if (savedModel) select.value = savedModel;
-                } else {
-                    select.innerHTML = '<option value="">ERROR_INVALID_KEY</option>';
                 }
-            } catch (e) {
-                select.innerHTML = '<option value="">CONNECTION_FAILED</option>';
-            }
+            } catch (e) {}
         }
-
-        function openConfig() { 
-            document.getElementById('config-modal').style.display = 'flex'; 
-            const currentKey = document.getElementById('modalApiKey').value;
-            if(currentKey) fetchModels(currentKey);
-        }
+        function openConfig() { document.getElementById('config-modal').style.display = 'flex'; const k = localStorage.getItem('renegade_key'); if(k) fetchModels(k); }
         function saveConfig() {
-            const key = document.getElementById('modalApiKey').value;
-            const model = document.getElementById('modalModelSelect').value;
-            if (key) {
-                localStorage.setItem('renegade_key', key);
-                localStorage.setItem('renegade_model', model);
-                document.getElementById('config-modal').style.display = 'none';
-            }
+            const k = document.getElementById('modalApiKey').value;
+            const m = document.getElementById('modalModelSelect').value;
+            if (k) { localStorage.setItem('renegade_key', k); localStorage.setItem('renegade_model', m); document.getElementById('config-modal').style.display = 'none'; }
         }
 
-        // Auto-check on load
         window.onload = () => {
-            const key = localStorage.getItem('renegade_key');
-            const model = localStorage.getItem('renegade_model');
-            if (!key) {
-                openConfig();
-            } else {
-                document.getElementById('modalApiKey').value = key;
-                if(model) document.getElementById('modalModelSelect').value = model;
-            }
+            const k = localStorage.getItem('renegade_key');
+            if (!k) { openConfig(); } else { document.getElementById('modalApiKey').value = k; }
             loadSessions();
         };
 
-        // --- TERMINAL LOGIC ---
         let currentStatus = 'bubble', active = false, initialX, initialY, activeMoved = false;
         const container = document.getElementById("term-container");
-
-        container.addEventListener('click', (e) => {
-            if (currentStatus === 'bubble' && !activeMoved) setTermState('mini');
-        });
-
+        container.addEventListener('click', () => { if (currentStatus === 'bubble' && !activeMoved) setTermState('mini'); });
         function setTermState(state) {
-            container.className = state;
-            currentStatus = state;
-            
-            if (state === 'full') {
-                container.style.left = "0"; container.style.top = "0";
-                term.resize(Math.floor(window.innerWidth / 8), Math.floor(window.innerHeight / 18));
-            } else if (state === 'mini') {
-                container.style.width = "350px"; container.style.height = "250px";
-                term.resize(45, 15);
-            } else if (state === 'bubble') {
-                container.style.width = "60px"; container.style.height = "60px";
-            }
+            container.className = state; currentStatus = state;
+            if (state === 'full') { container.style.left = "0"; container.style.top = "0"; term.resize(Math.floor(window.innerWidth / 8), Math.floor(window.innerHeight / 18)); }
+            else if (state === 'mini') { container.style.width = "350px"; container.style.height = "250px"; term.resize(45, 15); }
+            else if (state === 'bubble') { container.style.width = "60px"; container.style.height = "60px"; }
             socket.emit('terminal-resize', { cols: term.cols, rows: term.rows });
         }
-
         const startDrag = (e) => {
-            if (currentStatus === 'full') return;
-            active = true; activeMoved = false;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            initialX = clientX - container.offsetLeft;
-            initialY = clientY - container.offsetTop;
+            if (currentStatus === 'full') return; active = true; activeMoved = false;
+            const cX = e.touches ? e.touches[0].clientX : e.clientX;
+            const cY = e.touches ? e.touches[0].clientY : e.clientY;
+            initialX = cX - container.offsetLeft; initialY = cY - container.offsetTop;
         };
-
         const doDrag = (e) => {
-            if (!active) return;
-            activeMoved = true;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            container.style.left = (clientX - initialX) + "px";
-            container.style.top = (clientY - initialY) + "px";
-            container.style.right = "auto";
+            if (!active) return; activeMoved = true;
+            const cX = e.touches ? e.touches[0].clientX : e.clientX;
+            const cY = e.touches ? e.touches[0].clientY : e.clientY;
+            container.style.left = (cX - initialX) + "px"; container.style.top = (cY - initialY) + "px"; container.style.right = "auto";
         };
+        container.addEventListener('mousedown', startDrag); window.addEventListener('mousemove', doDrag); window.addEventListener('mouseup', () => active = false);
+        container.addEventListener('touchstart', startDrag, {passive: false}); window.addEventListener('touchmove', doDrag, {passive: false}); window.addEventListener('touchend', () => active = false);
 
-        container.addEventListener('mousedown', startDrag);
-        window.addEventListener('mousemove', doDrag);
-        window.addEventListener('mouseup', () => active = false);
-        container.addEventListener('touchstart', startDrag, {passive: false});
-        window.addEventListener('touchmove', doDrag, {passive: false});
-        window.addEventListener('touchend', () => active = false);
-
-        // --- CHAT LOGIC ---
         let chatHistory = [];
         let currentSessionId = 'session_' + Date.now();
-
         async function loadSessions() {
-            const res = await fetch('/api/sessions');
-            const sessions = await res.json();
-            const list = document.getElementById('session-list');
-            list.innerHTML = '';
+            const res = await fetch('/api/sessions'); const sessions = await res.json();
+            const list = document.getElementById('session-list'); list.innerHTML = '';
             sessions.reverse().forEach(s => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-2 text-[10px] border-b border-[#333] hover:bg-[#222] truncate orbitron";
-                btn.innerText = s.title;
-                btn.onclick = () => loadSession(s.id);
-                list.appendChild(btn);
+                const btn = document.createElement('button'); btn.className = "w-full text-left p-2 text-[10px] border-b border-[#333] hover:bg-[#222] truncate orbitron";
+                btn.innerText = s.title; btn.onclick = () => loadSession(s.id); list.appendChild(btn);
             });
         }
-
         async function loadSession(id) {
-            const res = await fetch(`/api/sessions/${id}`);
-            const data = await res.json();
-            currentSessionId = id; chatHistory = data.messages;
-            document.getElementById('chat-container').innerHTML = '';
+            const res = await fetch(`/api/sessions/${id}`); const data = await res.json();
+            currentSessionId = id; chatHistory = data.messages; document.getElementById('chat-container').innerHTML = '';
             chatHistory.forEach(m => appendMessage(m.role === 'user' ? 'OPERATOR' : 'KERNEL', m.parts[0].text, m.role === 'user'));
         }
-
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
-        
-        // Auto-close sidebar on mobile after action
-        function sideAction(fn) {
-            fn();
-            if (window.innerWidth < 1024) toggleSidebar();
-        }
-
-        function newChat() {
-            currentSessionId = 'session_' + Date.now(); chatHistory = [];
-            document.getElementById('chat-container').innerHTML = '';
-        }
-
+        function newChat() { currentSessionId = 'session_' + Date.now(); chatHistory = []; document.getElementById('chat-container').innerHTML = ''; }
         function appendMessage(sender, text, isUser) {
-            const container = document.getElementById('chat-container');
-            const div = document.createElement('div');
+            const c = document.getElementById('chat-container'); const div = document.createElement('div');
             div.className = `p-3 rounded-lg ${isUser ? 'bg-[#1a1a1a] ml-auto max-w-[80%]' : 'bg-[#0d0d0d] border border-[#7b2ff7] mr-auto max-w-[80%]'}`;
             div.innerHTML = `<span class="text-[10px] orbitron ${isUser ? 'text-[#7b2ff7]' : 'text-[#00f2fe]'}">${sender}</span><p class="mt-1 text-sm">${text}</p>`;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
+            c.appendChild(div); c.scrollTop = c.scrollHeight;
         }
-
         async function sendMessage() {
-            const input = document.getElementById('r_k_cmd_input_v2');
-            const text = input.value.trim();
-            const apiKey = localStorage.getItem('renegade_key');
-            const model = localStorage.getItem('renegade_model') || 'gemini-1.5-flash';
+            const input = document.getElementById('r_k_cmd_input_v2'); const text = input.value.trim();
+            const apiKey = localStorage.getItem('renegade_key'); const model = localStorage.getItem('renegade_model') || 'gemini-1.5-flash';
             if (!text || !apiKey) { openConfig(); return; }
-            
-            appendMessage('OPERATOR', text, true);
-            input.value = '';
-            const res = await fetch('/api/chat', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, apiKey, model, history: chatHistory })
-            });
+            appendMessage('OPERATOR', text, true); input.value = '';
+            const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, apiKey, model, history: chatHistory }) });
             const data = await res.json();
             if (data.reply) {
-                appendMessage('KERNEL', data.reply, false);
-                chatHistory.push({ role: 'user', parts: [{ text: text }] });
-                chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
-                fetch('/api/sessions/save', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: currentSessionId, title: chatHistory[0].parts[0].text.substring(0, 30), messages: chatHistory })
-                }).then(() => loadSessions());
-            } else if (data.error) {
-                appendMessage('SYSTEM_ERROR', data.error, false);
-            }
+                appendMessage('KERNEL', data.reply, false); chatHistory.push({ role: 'user', parts: [{ text: text }] }); chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
+                fetch('/api/sessions/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: currentSessionId, title: chatHistory[0].parts[0].text.substring(0, 30), messages: chatHistory }) }).then(() => loadSessions());
+            } else if (data.error) { appendMessage('SYSTEM_ERROR', data.error, false); }
         }
     </script>
 </body>
