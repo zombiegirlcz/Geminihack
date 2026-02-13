@@ -73,7 +73,7 @@ app.post('/api/sessions/save', async (req, res) => {
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// --- MODELS LIST ---
+// --- MODELS LIST WITH QUOTA VERIFICATION ---
 app.post('/api/models', async (req, res) => {
     try {
         const { apiKey } = req.body;
@@ -82,14 +82,28 @@ app.post('/api/models', async (req, res) => {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
         const data = await response.json();
         
-        if (data.models) {
-            const filtered = data.models
-                .filter(m => m.supportedGenerationMethods.includes('generateContent'))
-                .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
-            res.json({ models: filtered });
-        } else {
-            res.status(401).json({ error: "Invalid API Key or no models found" });
-        }
+        if (!data.models) return res.status(401).json({ error: "Invalid API Key" });
+
+        const candidates = data.models
+            .filter(m => m.supportedGenerationMethods.includes('generateContent'))
+            .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
+
+        // Test quota for each candidate (Parallel check)
+        const verifiedModels = await Promise.all(candidates.map(async (model) => {
+            try {
+                const testRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model.id}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: 'hi' }] }] })
+                });
+                const testData = await testRes.json();
+                // If we get a response or a specific error that isn't Quota Exceeded for the whole tier
+                if (testRes.status !== 429) return model;
+                return null;
+            } catch (e) { return null; }
+        }));
+
+        res.json({ models: verifiedModels.filter(m => m !== null) });
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
