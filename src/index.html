@@ -13,7 +13,7 @@
         body { background-color: #0d0d0d; color: #00f2fe; font-family: 'JetBrains Mono', monospace; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         .neon-text { text-shadow: 0 0 5px #00f2fe; }
-        .sidebar { transition: transform 0.3s ease-in-out; }
+        .sidebar { transition: transform 0.3s ease-in-out; left: 0; }
         .sidebar.closed { transform: translateX(-100%); }
         
         /* Modal Overlay */
@@ -76,8 +76,8 @@
     <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 bg-[#1a1a1a] border-r border-[#7b2ff7] z-50 closed lg:static lg:transform-none">
         <div class="p-4 flex flex-col h-full">
             <h2 class="orbitron text-xl font-bold mb-6 neon-text">OPERATOR_HUB</h2>
-            <button onclick="newChat()" class="mb-2 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold text-xs hover:bg-[#9d50bb]">NEW_SESSION</button>
-            <button onclick="openConfig()" class="mb-2 w-full p-2 border border-[#7b2ff7] text-[#7b2ff7] orbitron font-bold text-xs hover:bg-[#7b2ff7] hover:text-white">CONFIG_SYSTEM</button>
+            <button onclick="sideAction(newChat)" class="mb-2 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold text-xs hover:bg-[#9d50bb]">NEW_SESSION</button>
+            <button onclick="sideAction(openConfig)" class="mb-2 w-full p-2 border border-[#7b2ff7] text-[#7b2ff7] orbitron font-bold text-xs hover:bg-[#7b2ff7] hover:text-white">CONFIG_SYSTEM</button>
             <button onclick="location.reload()" class="mb-4 w-full p-2 border border-[#333] text-gray-500 orbitron font-bold text-xs hover:text-[#00f2fe]">REBOOT_UI</button>
             
             <div id="session-list" class="flex-1 overflow-y-auto space-y-1"></div>
@@ -247,6 +247,13 @@
         }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
+        
+        // Auto-close sidebar on mobile after action
+        function sideAction(fn) {
+            fn();
+            if (window.innerWidth < 1024) toggleSidebar();
+        }
+
         function newChat() {
             currentSessionId = 'session_' + Date.now(); chatHistory = [];
             document.getElementById('chat-container').innerHTML = '';
