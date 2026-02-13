@@ -16,27 +16,43 @@
         .sidebar { transition: transform 0.3s ease-in-out; }
         .sidebar.closed { transform: translateX(-100%); }
         
-        /* Terminal Styling */
+        /* Draggable Terminal */
         #term-wrapper { 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
+            display: flex;
+            flex-direction: column;
         }
         #term-wrapper.mini {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 300px; height: 200px;
-            border: 2px solid #7b2ff7; box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
-            border-radius: 8px; overflow: hidden;
+            position: fixed; 
+            top: 80px; right: 20px;
+            width: 350px; height: 250px;
+            border: 2px solid #7b2ff7; 
+            box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+            border-radius: 8px; 
+            overflow: hidden;
+            background: black;
         }
         #term-wrapper.full {
-            position: fixed; inset: 0;
-            width: 100vw; height: 100vh;
+            position: fixed; inset: 0 !important;
+            width: 100vw !important; height: 100vh !important;
             border: none; border-radius: 0;
+            transform: none !important;
         }
         .term-header {
-            background: #1a1a1a; padding: 5px 10px;
+            background: #1a1a1a; padding: 8px 12px;
             display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer;
+            cursor: move;
+            border-bottom: 1px solid #333;
+            user-select: none;
         }
+        .expand-btn {
+            cursor: pointer;
+            padding: 2px 8px;
+            background: #333;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        .expand-btn:hover { background: #7b2ff7; }
     </style>
 </head>
 <body class="h-screen flex overflow-hidden">
@@ -77,38 +93,90 @@
 
     <!-- TERMINAL WINDOW -->
     <div id="term-wrapper" class="mini">
-        <div class="term-header" onclick="toggleTerm()">
-            <span class="text-[10px] orbitron font-bold">TERMUX_LIVE_STREAM</span>
-            <span id="term-status" class="text-[10px] text-green-500">● ONLINE</span>
+        <div class="term-header" id="term-handle">
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] orbitron font-bold">TERMUX_LIVE</span>
+                <span id="term-status" class="text-[8px] text-green-500">● ONLINE</span>
+            </div>
+            <div class="flex gap-2">
+                <span class="expand-btn orbitron" onclick="toggleTerm()">FULL</span>
+            </div>
         </div>
-        <div id="terminal" class="h-full"></div>
+        <div id="terminal" class="flex-1 bg-black"></div>
     </div>
 
     <script>
         const socket = io();
         const term = new Terminal({
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: 12,
-            theme: { background: '#000', foreground: '#00f2fe' }
+            fontSize: 11,
+            theme: { background: '#000', foreground: '#00f2fe' },
+            cursorBlink: true
         });
         term.open(document.getElementById('terminal'));
 
         socket.on('terminal-output', (data) => term.write(data));
         term.onData(data => socket.emit('terminal-input', data));
 
+        // --- DRAGGABLE LOGIC ---
+        const dragItem = document.getElementById("term-wrapper");
+        const dragHandle = document.getElementById("term-handle");
+
+        let active = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let clientY;
+
+        dragHandle.addEventListener("mousedown", dragStart);
+        document.addEventListener("mouseup", dragEnd);
+        document.addEventListener("mousemove", drag);
+
+        dragHandle.addEventListener("touchstart", (e) => dragStart(e.touches[0]), {passive: false});
+        document.addEventListener("touchend", dragEnd);
+        document.addEventListener("touchmove", (e) => drag(e.touches[0]), {passive: false});
+
+        function dragStart(e) {
+            if (dragItem.classList.contains('full')) return;
+            initialX = e.clientX - dragItem.offsetLeft;
+            initialY = e.clientY - dragItem.offsetTop;
+            active = true;
+        }
+
+        function dragEnd() {
+            active = false;
+        }
+
+        function drag(e) {
+            if (active) {
+                e.preventDefault ? e.preventDefault() : null;
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                dragItem.style.left = currentX + "px";
+                dragItem.style.top = currentY + "px";
+                dragItem.style.right = "auto";
+                dragItem.style.bottom = "auto";
+            }
+        }
+
         function toggleTerm() {
             const wrap = document.getElementById('term-wrapper');
             const isFull = wrap.classList.toggle('full');
             wrap.classList.toggle('mini');
             
-            // Resize logic
-            const cols = isFull ? Math.floor(window.innerWidth / 9) : 40;
-            const rows = isFull ? Math.floor(window.innerHeight / 20) : 12;
+            if (isFull) {
+                wrap.style.left = ""; wrap.style.top = "";
+            } else {
+                wrap.style.top = "80px"; wrap.style.right = "20px"; wrap.style.left = "auto";
+            }
+
+            const cols = isFull ? Math.floor(window.innerWidth / 8) : 45;
+            const rows = isFull ? Math.floor(window.innerHeight / 18) : 15;
             term.resize(cols, rows);
             socket.emit('terminal-resize', { cols, rows });
         }
 
-        // --- CHAT LOGIC (Same as before with persistence) ---
+        // --- CHAT LOGIC ---
         let currentSessionId = 'session_' + Date.now();
         let chatHistory = [];
 
@@ -119,7 +187,7 @@
             list.innerHTML = '';
             sessions.reverse().forEach(s => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-2 text-sm border-b border-[#333] hover:bg-[#222] truncate";
+                btn.className = "w-full text-left p-2 text-xs border-b border-[#333] hover:bg-[#222] truncate";
                 btn.innerText = s.title;
                 btn.onclick = () => loadSession(s.id);
                 list.appendChild(btn);
@@ -145,7 +213,7 @@
             const container = document.getElementById('chat-container');
             const div = document.createElement('div');
             div.className = `p-3 rounded-lg ${isUser ? 'bg-[#1a1a1a] ml-auto max-w-[80%]' : 'bg-[#0d0d0d] border border-[#7b2ff7] mr-auto max-w-[80%]'}`;
-            div.innerHTML = `<span class="text-[10px] orbitron ${isUser ? 'text-[#7b2ff7]' : 'text-[#00f2fe]'}">${sender}</span><p class="mt-1">${text}</p>`;
+            div.innerHTML = `<span class="text-[10px] orbitron ${isUser ? 'text-[#7b2ff7]' : 'text-[#00f2fe]'}">${sender}</span><p class="mt-1 text-sm">${text}</p>`;
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -179,14 +247,16 @@
         }
 
         async function fetchModels(key) {
-            const res = await fetch('/api/models', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ apiKey: key })
-            });
-            const data = await res.json();
-            const select = document.getElementById('modelSelect');
-            select.innerHTML = data.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+            try {
+                const res = await fetch('/api/models', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ apiKey: key })
+                });
+                const data = await res.json();
+                const select = document.getElementById('modelSelect');
+                select.innerHTML = data.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
+            } catch(e) {}
         }
 
         const savedKey = localStorage.getItem('renegade_key');
