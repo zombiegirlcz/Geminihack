@@ -73,6 +73,26 @@ app.post('/api/sessions/save', async (req, res) => {
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
+// --- MODELS LIST ---
+app.post('/api/models', async (req, res) => {
+    try {
+        const { apiKey } = req.body;
+        if (!apiKey) return res.status(400).json({ error: "Missing API Key" });
+        
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        const data = await response.json();
+        
+        if (data.models) {
+            const filtered = data.models
+                .filter(m => m.supportedGenerationMethods.includes('generateContent'))
+                .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
+            res.json({ models: filtered });
+        } else {
+            res.status(401).json({ error: "Invalid API Key or no models found" });
+        }
+    } catch (error) { res.status(500).json({ error: error.message }); }
+});
+
 // --- AI CHAT ---
 app.post('/api/chat', async (req, res) => {
     try {
@@ -82,7 +102,7 @@ app.post('/api/chat', async (req, res) => {
         const genAI = new GoogleGenerativeAI(apiKey);
         const aiModel = genAI.getGenerativeModel({ 
             model: model || "gemini-1.5-flash",
-            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky. Máš přístup k živému terminálu."
+            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky."
         });
 
         const chat = aiModel.startChat({ history: history || [] });
