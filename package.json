@@ -1,7 +1,7 @@
 {
   "name": "renegade-web-gui",
-  "version": "1.0.0",
-  "description": "Renegade Kernel Web Interface with Operator Powers",
+  "version": "1.2.0",
+  "description": "Renegade Kernel Web Interface with Live Terminal",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -10,6 +10,8 @@
     "@google/generative-ai": "^0.24.1",
     "express": "^4.21.1",
     "fs-extra": "^11.2.0",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "node-pty": "^1.0.0",
+    "socket.io": "^4.7.2"
   }
 }

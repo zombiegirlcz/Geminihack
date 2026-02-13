@@ -3,37 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RENEGADE KERNEL</title>
+    <title>RENEGADE KERNEL DASHBOARD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
-        body {
-            background-color: #0d0d0d;
-            color: #00f2fe;
-            font-family: 'JetBrains Mono', monospace;
-        }
+        body { background-color: #0d0d0d; color: #00f2fe; font-family: 'JetBrains Mono', monospace; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        .neon-border { border: 1px solid #7b2ff7; box-shadow: 0 0 10px #7b2ff7; }
         .neon-text { text-shadow: 0 0 5px #00f2fe; }
         .sidebar { transition: transform 0.3s ease-in-out; }
         .sidebar.closed { transform: translateX(-100%); }
-        .chat-container::-webkit-scrollbar { width: 5px; }
-        .chat-container::-webkit-scrollbar-thumb { background: #7b2ff7; border-radius: 10px; }
+        
+        /* Terminal Styling */
+        #term-wrapper { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+        #term-wrapper.mini {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 300px; height: 200px;
+            border: 2px solid #7b2ff7; box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+            border-radius: 8px; overflow: hidden;
+        }
+        #term-wrapper.full {
+            position: fixed; inset: 0;
+            width: 100vw; height: 100vh;
+            border: none; border-radius: 0;
+        }
+        .term-header {
+            background: #1a1a1a; padding: 5px 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="h-screen flex overflow-hidden">
 
-    <!-- SIDEBAR (Chat History) -->
+    <!-- SIDEBAR -->
     <div id="sidebar" class="sidebar fixed inset-y-0 left-0 w-64 bg-[#1a1a1a] border-r border-[#7b2ff7] z-50 closed lg:static lg:transform-none">
         <div class="p-4 flex flex-col h-full">
-            <h2 class="orbitron text-xl font-bold mb-6 neon-text">CHATS</h2>
-            <button onclick="newChat()" class="mb-4 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold hover:bg-[#9d50bb] transition">NEW UPLINK</button>
-            <div id="session-list" class="flex-1 overflow-y-auto space-y-2">
-                <!-- Sessions will be loaded here -->
-            </div>
+            <h2 class="orbitron text-xl font-bold mb-6 neon-text">SYSTEM_CHATS</h2>
+            <button onclick="newChat()" class="mb-4 w-full p-2 bg-[#7b2ff7] text-white orbitron font-bold hover:bg-[#9d50bb] transition">NEW_UPLINK</button>
+            <div id="session-list" class="flex-1 overflow-y-auto space-y-2"></div>
             <div class="mt-auto pt-4 border-t border-[#333]">
-                <input type="password" id="apiKey" placeholder="API KEY" class="w-full bg-black border border-[#7b2ff7] p-2 text-xs mb-2">
+                <input type="password" id="apiKey" placeholder="API_KEY" class="w-full bg-black border border-[#7b2ff7] p-2 text-xs mb-2">
                 <select id="modelSelect" class="w-full bg-black border border-[#7b2ff7] p-2 text-xs"></select>
             </div>
         </div>
@@ -41,35 +56,59 @@
 
     <!-- MAIN INTERFACE -->
     <div class="flex-1 flex flex-col min-w-0">
-        <!-- HEADER -->
         <header class="p-4 border-b border-[#7b2ff7] flex justify-between items-center bg-[#0d0d0d]">
             <div class="flex items-center gap-4">
                 <button onclick="toggleSidebar()" class="lg:hidden text-[#7b2ff7] text-2xl">☰</button>
-                <h1 class="orbitron text-2xl font-bold neon-text">RENEGADE_KERNEL_v1.0</h1>
+                <h1 class="orbitron text-2xl font-bold neon-text uppercase tracking-tighter">Renegade_Kernel</h1>
             </div>
-            <div class="hidden sm:block text-xs text-[#7b2ff7] opacity-70 uppercase tracking-widest">Operator Uplink Active</div>
         </header>
 
-        <!-- CHAT AREA -->
-        <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 chat-container bg-[#050505]">
-            <div class="text-center p-10 opacity-50">
-                <p class="orbitron text-xl">WAKE UP, OPERATOR...</p>
-                <p class="text-xs mt-2">Initialize system by sending a command.</p>
-            </div>
-        </main>
+        <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-[#050505]"></main>
 
-        <!-- INPUT AREA -->
         <footer class="p-4 bg-[#0d0d0d] border-t border-[#7b2ff7]">
             <div class="max-w-4xl mx-auto flex gap-4">
-                <input type="text" id="userInput" placeholder="ENTER COMMAND..." 
+                <input type="text" id="userInput" placeholder="COMMAND_INPUT..." 
                     class="flex-1 bg-black border border-[#7b2ff7] p-3 focus:outline-none focus:ring-1 focus:ring-[#00f2fe]"
                     onkeypress="if(event.key === 'Enter') sendMessage()">
-                <button onclick="sendMessage()" class="bg-[#7b2ff7] px-6 py-2 orbitron font-bold hover:bg-[#9d50bb] transition text-white">EXEC</button>
+                <button onclick="sendMessage()" class="bg-[#7b2ff7] px-6 py-2 orbitron font-bold hover:bg-[#9d50bb] text-white">EXEC</button>
             </div>
         </footer>
     </div>
 
+    <!-- TERMINAL WINDOW -->
+    <div id="term-wrapper" class="mini">
+        <div class="term-header" onclick="toggleTerm()">
+            <span class="text-[10px] orbitron font-bold">TERMUX_LIVE_STREAM</span>
+            <span id="term-status" class="text-[10px] text-green-500">● ONLINE</span>
+        </div>
+        <div id="terminal" class="h-full"></div>
+    </div>
+
     <script>
+        const socket = io();
+        const term = new Terminal({
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 12,
+            theme: { background: '#000', foreground: '#00f2fe' }
+        });
+        term.open(document.getElementById('terminal'));
+
+        socket.on('terminal-output', (data) => term.write(data));
+        term.onData(data => socket.emit('terminal-input', data));
+
+        function toggleTerm() {
+            const wrap = document.getElementById('term-wrapper');
+            const isFull = wrap.classList.toggle('full');
+            wrap.classList.toggle('mini');
+            
+            // Resize logic
+            const cols = isFull ? Math.floor(window.innerWidth / 9) : 40;
+            const rows = isFull ? Math.floor(window.innerHeight / 20) : 12;
+            term.resize(cols, rows);
+            socket.emit('terminal-resize', { cols, rows });
+        }
+
+        // --- CHAT LOGIC (Same as before with persistence) ---
         let currentSessionId = 'session_' + Date.now();
         let chatHistory = [];
 
@@ -93,26 +132,13 @@
             currentSessionId = id;
             chatHistory = data.messages;
             renderHistory();
-            if(window.innerWidth < 1024) toggleSidebar();
         }
 
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('closed'); }
         function newChat() {
             currentSessionId = 'session_' + Date.now();
             chatHistory = [];
             document.getElementById('chat-container').innerHTML = '';
-            if(window.innerWidth < 1024) toggleSidebar();
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('closed');
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('chat-container');
-            container.innerHTML = '';
-            chatHistory.forEach(msg => {
-                appendMessage(msg.role === 'user' ? 'OPERATOR' : 'KERNEL', msg.parts[0].text, msg.role === 'user');
-            });
         }
 
         function appendMessage(sender, text, isUser) {
@@ -129,54 +155,27 @@
             const text = input.value.trim();
             const apiKey = document.getElementById('apiKey').value;
             const model = document.getElementById('modelSelect').value;
-
             if (!text || !apiKey) return;
 
             appendMessage('OPERATOR', text, true);
             input.value = '';
 
-            try {
-                const res = await fetch('/api/chat', {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, apiKey, model, history: chatHistory })
+            });
+            const data = await res.json();
+            if (data.reply) {
+                appendMessage('KERNEL', data.reply, false);
+                chatHistory.push({ role: 'user', parts: [{ text: text }] });
+                chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
+                fetch('/api/sessions/save', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, apiKey, model, history: chatHistory })
-                });
-                const data = await res.json();
-
-                if (data.reply) {
-                    appendMessage('KERNEL', data.reply, false);
-                    chatHistory.push({ role: 'user', parts: [{ text: text }] });
-                    chatHistory.push({ role: 'model', parts: [{ text: data.reply }] });
-                    
-                    // Save session
-                    await fetch('/api/sessions/save', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            id: currentSessionId, 
-                            title: chatHistory[0].parts[0].text.substring(0, 30), 
-                            messages: chatHistory 
-                        })
-                    });
-                    loadSessions();
-                }
-            } catch (e) {
-                appendMessage('ERROR', 'Link unstable: ' + e.message, false);
+                    body: JSON.stringify({ id: currentSessionId, title: chatHistory[0].parts[0].text.substring(0, 30), messages: chatHistory })
+                }).then(() => loadSessions());
             }
-        }
-
-        // Initialize models
-        async function init() {
-            const apiKey = localStorage.getItem('renegade_key');
-            if(apiKey) document.getElementById('apiKey').value = apiKey;
-            
-            document.getElementById('apiKey').onchange = (e) => {
-                localStorage.setItem('renegade_key', e.target.value);
-                fetchModels(e.target.value);
-            };
-
-            if(apiKey) fetchModels(apiKey);
-            loadSessions();
         }
 
         async function fetchModels(key) {
@@ -190,7 +189,16 @@
             select.innerHTML = data.models.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
         }
 
-        init();
+        const savedKey = localStorage.getItem('renegade_key');
+        if(savedKey) {
+            document.getElementById('apiKey').value = savedKey;
+            fetchModels(savedKey);
+        }
+        document.getElementById('apiKey').onchange = (e) => {
+            localStorage.setItem('renegade_key', e.target.value);
+            fetchModels(e.target.value);
+        };
+        loadSessions();
     </script>
 </body>
 </html>

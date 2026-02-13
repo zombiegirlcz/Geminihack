@@ -1,22 +1,52 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const pty = require('node-pty');
 const path = require('path');
 const fs = require('fs-extra');
-const { exec } = require('child_process');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 const port = 3000;
 const sessionsDir = path.join(__dirname, 'sessions');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'src')));
-
-// Ensure sessions directory exists
 fs.ensureDirSync(sessionsDir);
 
-// --- SESSION MANAGEMENT ---
+// --- LIVE TERMINAL (PTY) ---
+io.on('connection', (socket) => {
+    console.log('\x1b[35m[TERMINAL] Operator connected via WebSocket\x1b[0m');
 
-// List all sessions
+    const shell = process.platform === 'win32' ? 'powershell.exe' : 'bash';
+    const ptyProcess = pty.spawn(shell, [], {
+        name: 'xterm-color',
+        cols: 80,
+        rows: 24,
+        cwd: process.env.HOME,
+        env: process.env
+    });
+
+    ptyProcess.onData((data) => {
+        socket.emit('terminal-output', data);
+    });
+
+    socket.on('terminal-input', (data) => {
+        ptyProcess.write(data);
+    });
+
+    socket.on('terminal-resize', (size) => {
+        ptyProcess.resize(size.cols, size.rows);
+    });
+
+    socket.on('disconnect', () => {
+        ptyProcess.kill();
+    });
+});
+
+// --- SESSION MANAGEMENT ---
 app.get('/api/sessions', async (req, res) => {
     try {
         const files = await fs.readdir(sessionsDir);
@@ -25,53 +55,25 @@ app.get('/api/sessions', async (req, res) => {
             return { id: f.replace('.json', ''), title: content.title || f };
         }));
         res.json(sessions);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// Load specific session
 app.get('/api/sessions/:id', async (req, res) => {
     try {
         const content = await fs.readJson(path.join(sessionsDir, `${req.params.id}.json`));
         res.json(content);
-    } catch (error) {
-        res.status(404).json({ error: "Session not found" });
-    }
+    } catch (error) { res.status(404).json({ error: "Not found" }); }
 });
 
-// Save/Update session
 app.post('/api/sessions/save', async (req, res) => {
     const { id, messages, title } = req.body;
     try {
         await fs.writeJson(path.join(sessionsDir, `${id}.json`), { title, messages });
         res.json({ status: "saved" });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// --- OPERATOR CAPABILITIES ---
-
-app.post('/api/operator/execute', (req, res) => {
-    const { command } = req.body;
-    exec(command, (error, stdout, stderr) => {
-        res.json({ output: stdout || stderr, error: error ? error.message : null });
-    });
-});
-
-app.post('/api/operator/write', async (req, res) => {
-    const { filePath, content, isDir } = req.body;
-    try {
-        const fullPath = path.resolve(process.env.HOME, filePath);
-        if (isDir) await fs.ensureDir(fullPath);
-        else await fs.outputFile(fullPath, content);
-        res.json({ status: "success" });
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// --- AI ENGINE ---
-
+// --- AI CHAT ---
 app.post('/api/chat', async (req, res) => {
     try {
         const { message, apiKey, model, history } = req.body;
@@ -80,20 +82,16 @@ app.post('/api/chat', async (req, res) => {
         const genAI = new GoogleGenerativeAI(apiKey);
         const aiModel = genAI.getGenerativeModel({ 
             model: model || "gemini-1.5-flash",
-            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky."
+            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky. Máš přístup k živému terminálu."
         });
 
-        // Přidání historie do chatu pro kontinuitu
         const chat = aiModel.startChat({ history: history || [] });
         const result = await chat.sendMessage(message);
         const response = await result.response;
-        
         res.json({ reply: response.text() });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`\x1b[36m[RENEGADE_KERNEL] Operator Uplink active on port ${port}\x1b[0m`);
+server.listen(port, '0.0.0.0', () => {
+    console.log(`\x1b[36m[RENEGADE_KERNEL] Operator Dashboard active on port ${port}\x1b[0m`);
 });
