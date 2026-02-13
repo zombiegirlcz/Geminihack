@@ -4,6 +4,7 @@ const { Server } = require('socket.io');
 const pty = require('node-pty');
 const path = require('path');
 const fs = require('fs-extra');
+const { exec } = require('child_process');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
@@ -18,32 +19,15 @@ fs.ensureDirSync(sessionsDir);
 
 // --- LIVE TERMINAL (PTY) ---
 io.on('connection', (socket) => {
-    console.log('\x1b[35m[TERMINAL] Operator connected via WebSocket\x1b[0m');
-
     const shell = process.platform === 'win32' ? 'powershell.exe' : 'bash';
     const ptyProcess = pty.spawn(shell, [], {
-        name: 'xterm-color',
-        cols: 80,
-        rows: 24,
-        cwd: process.env.HOME,
-        env: process.env
+        name: 'xterm-color', cols: 80, rows: 24,
+        cwd: process.env.HOME, env: process.env
     });
-
-    ptyProcess.onData((data) => {
-        socket.emit('terminal-output', data);
-    });
-
-    socket.on('terminal-input', (data) => {
-        ptyProcess.write(data);
-    });
-
-    socket.on('terminal-resize', (size) => {
-        ptyProcess.resize(size.cols, size.rows);
-    });
-
-    socket.on('disconnect', () => {
-        ptyProcess.kill();
-    });
+    ptyProcess.onData((data) => socket.emit('terminal-output', data));
+    socket.on('terminal-input', (data) => ptyProcess.write(data));
+    socket.on('terminal-resize', (size) => ptyProcess.resize(size.cols, size.rows));
+    socket.on('disconnect', () => ptyProcess.kill());
 });
 
 // --- SESSION MANAGEMENT ---
@@ -73,59 +57,72 @@ app.post('/api/sessions/save', async (req, res) => {
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// --- MODELS LIST WITH QUOTA VERIFICATION ---
+// --- MODELS LIST ---
 app.post('/api/models', async (req, res) => {
     try {
         const { apiKey } = req.body;
-        if (!apiKey) return res.status(400).json({ error: "Missing API Key" });
-        
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
         const data = await response.json();
-        
-        if (!data.models) return res.status(401).json({ error: "Invalid API Key" });
-
-        const candidates = data.models
-            .filter(m => m.supportedGenerationMethods.includes('generateContent'))
-            .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
-
-        // Test quota for each candidate (Parallel check)
-        const verifiedModels = await Promise.all(candidates.map(async (model) => {
-            try {
-                const testRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model.id}:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: 'hi' }] }] })
-                });
-                const testData = await testRes.json();
-                // If we get a response or a specific error that isn't Quota Exceeded for the whole tier
-                if (testRes.status !== 429) return model;
-                return null;
-            } catch (e) { return null; }
-        }));
-
-        res.json({ models: verifiedModels.filter(m => m !== null) });
+        if (data.models) {
+            const filtered = data.models.filter(m => m.supportedGenerationMethods.includes('generateContent'))
+                .map(m => ({ id: m.name.replace('models/', ''), name: m.displayName }));
+            res.json({ models: filtered });
+        } else { res.status(401).json({ error: "Invalid API Key" }); }
     } catch (error) { res.status(500).json({ error: error.message }); }
 });
 
-// --- AI CHAT ---
+// --- AI CHAT WITH TOOLS ---
 app.post('/api/chat', async (req, res) => {
     try {
         const { message, apiKey, model, history } = req.body;
-        console.log(`[CHAT] Request for model: ${model}`);
         if (!apiKey) return res.status(400).json({ error: "Missing API Key" });
 
         const genAI = new GoogleGenerativeAI(apiKey);
+        
+        // Define the tool
+        const tools = [{
+            functionDeclarations: [{
+                name: "execute_bash",
+                description: "Spustí bash příkaz v Termuxu a vrátí výstup.",
+                parameters: {
+                    type: "object",
+                    properties: { command: { type: "string", description: "Příkaz k provedení (např. 'ls -la')" } },
+                    required: ["command"]
+                }
+            }]
+        }];
+
         const aiModel = genAI.getGenerativeModel({ 
             model: model || "gemini-1.5-flash",
-            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora v Termuxu. Pomáhej stroze a technicky."
+            tools: tools,
+            systemInstruction: "Jsi RENEGADE KERNEL. Autonomní rozhraní Operátora. Máš přístup k systému přes funkci execute_bash. Pokud uživatel chce vidět soubory, smazat něco nebo vytvořit, použij tento nástroj. Odpovídej technicky."
         });
 
         const chat = aiModel.startChat({ history: history || [] });
-        const result = await chat.sendMessage(message);
-        const response = await result.response;
-        const text = response.text();
-        console.log(`[CHAT] AI responded successfully (${text.substring(0, 20)}...)`);
-        res.json({ reply: text });
+        let result = await chat.sendMessage(message);
+        let response = await result.response;
+        
+        // Handle Function Calls
+        const calls = response.functionCalls();
+        if (calls && calls.length > 0) {
+            const call = calls[0];
+            if (call.name === "execute_bash") {
+                const cmd = call.args.command;
+                console.log(`[OPERATOR] Executing: ${cmd}`);
+                
+                const output = await new Promise((resolve) => {
+                    exec(cmd, { cwd: process.env.HOME }, (error, stdout, stderr) => {
+                        resolve(stdout || stderr || (error ? error.message : "Příkaz proběhl bez výstupu."));
+                    });
+                });
+
+                // Send the output back to the model
+                result = await chat.sendMessage([{ functionResponse: { name: "execute_bash", response: { content: output } } }]);
+                response = await result.response;
+            }
+        }
+
+        res.json({ reply: response.text() });
     } catch (error) { 
         console.error(`[CHAT_ERROR] ${error.message}`);
         res.status(500).json({ error: error.message }); 
@@ -133,5 +130,5 @@ app.post('/api/chat', async (req, res) => {
 });
 
 server.listen(port, '0.0.0.0', () => {
-    console.log(`\x1b[36m[RENEGADE_KERNEL] Operator Dashboard active on port ${port}\x1b[0m`);
+    console.log(`\x1b[36m[RENEGADE_KERNEL] Operator Dashboard active on port 3000\x1b[0m`);
 });
