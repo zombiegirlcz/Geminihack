@@ -105,6 +105,7 @@
                     autocomplete="one-time-code" 
                     spellcheck="false" 
                     placeholder="COMMAND_INPUT..." 
+                    onkeypress="if(event.key === 'Enter') sendMessage()"
                     class="flex-1 bg-black border border-[#7b2ff7] p-3 outline-none focus:ring-1 focus:ring-[#00f2fe] text-sm">
                 <button onclick="sendMessage()" class="bg-[#7b2ff7] px-6 py-2 orbitron font-bold hover:bg-[#9d50bb] text-white text-xs">EXEC</button>
             </div>
@@ -304,6 +305,8 @@
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id: currentSessionId, title: chatHistory[0].parts[0].text.substring(0, 30), messages: chatHistory })
                 }).then(() => loadSessions());
+            } else if (data.error) {
+                appendMessage('SYSTEM_ERROR', data.error, false);
             }
         }
     </script>
