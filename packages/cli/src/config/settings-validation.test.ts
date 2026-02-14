@@ -324,7 +324,7 @@ describe('settings-validation', () => {
         expect(formatted).toContain('Expected: string, but received: object');
         expect(formatted).toContain('Please fix the configuration.');
         expect(formatted).toContain(
-          'https://github.com/google-gemini/gemini-cli',
+          'https://github.com/zombiegirlcz/RENEGADE-kernel-cli',
         );
       }
     });
@@ -364,7 +364,7 @@ describe('settings-validation', () => {
         const formatted = formatValidationError(result.error, 'test.json');
 
         expect(formatted).toContain(
-          'https://github.com/google-gemini/gemini-cli',
+          'https://github.com/zombiegirlcz/RENEGADE-kernel-cli',
         );
         expect(formatted).toContain('configuration.md');
       }

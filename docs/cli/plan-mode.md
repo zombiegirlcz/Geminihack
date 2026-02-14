@@ -21,7 +21,7 @@ implementation strategy.
 > suggestions, or encounter issues:
 >
 > - Use the `/bug` command within the CLI to file an issue.
-> - [Open an issue](https://github.com/google-gemini/gemini-cli/issues) on
+> - [Open an issue](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/issues) on
 >   GitHub.
 
 - [Starting in Plan Mode](#starting-in-plan-mode)

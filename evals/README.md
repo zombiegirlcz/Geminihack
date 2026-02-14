@@ -119,10 +119,10 @@ This command sets the `RUN_EVALS` environment variable to `1`, which enables the
 Results for evaluations are available on GitHub Actions:
 
 - **CI Evals**: Included in the
-  [E2E (Chained)](https://github.com/google-gemini/gemini-cli/actions/workflows/chained_e2e.yml)
+  [E2E (Chained)](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/actions/workflows/chained_e2e.yml)
   workflow. These must pass 100% for every PR.
 - **Nightly Evals**: Run daily via the
-  [Evals: Nightly](https://github.com/google-gemini/gemini-cli/actions/workflows/evals-nightly.yml)
+  [Evals: Nightly](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/actions/workflows/evals-nightly.yml)
   workflow. These track the long-term health and stability of model steering.
 
 ### Nightly Report Format
@@ -178,7 +178,7 @@ You can also provide a link to a specific GitHub Action run or the name of a
 specific test to focus the investigation:
 
 ```bash
-gemini /fix-behavioral-eval https://github.com/google-gemini/gemini-cli/actions/runs/123456789
+gemini /fix-behavioral-eval https://github.com/zombiegirlcz/RENEGADE-kernel-cli/actions/runs/123456789
 ```
 
 When investigating failures manually, you can also enable verbose agent logs by

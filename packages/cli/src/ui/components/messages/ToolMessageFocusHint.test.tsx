@@ -20,8 +20,8 @@ import {
   CoreToolCallStatus,
 } from '@google/renegade-cli-core';
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => null,
+vi.mock('../RenegadeRespondingSpinner.js', () => ({
+  RenegadeRespondingSpinner: () => null,
 }));
 
 vi.mock('./ToolResultDisplay.js', () => ({

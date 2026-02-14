@@ -115,7 +115,7 @@ Settings and customization options for Gemini CLI.
   reference.
 - **[Model configuration](./cli/generation-settings.md):** Fine-tune generation
   parameters like temperature and thinking budget.
-- **[Project context (GEMINI.md)](./cli/gemini-md.md):** Technical hierarchy of
+- **[Project context (renegade.md)](./cli/gemini-md.md):** Technical hierarchy of
   context files.
 - **[Settings](./cli/settings.md):** Full configuration reference.
 - **[System prompt override](./cli/system-prompt.md):** Instruction replacement

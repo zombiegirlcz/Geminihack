@@ -47,7 +47,7 @@ These tools help the model manage its plan and interact with you.
 - **Ask user (`ask_user`):** Requests clarification or missing information from
   you via an interactive dialog.
 - **[Memory](./memory.md) (`save_memory`):** Saves important facts to your
-  long-term memory (`GEMINI.md`).
+  long-term memory (`renegade.md`).
 - **[Todos](./todos.md) (`write_todos`):** Manages a list of subtasks for
   complex plans.
 - **[Agent Skills](../cli/skills.md) (`activate_skill`):** Loads specialized

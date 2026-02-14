@@ -12,7 +12,7 @@ import {
   type McpClient,
   MCPServerStatus,
 } from '@google/renegade-cli-core';
-import { GeminiSpinner } from './RENEGADERespondingSpinner.js';
+import { RenegadeSpinner } from './RENEGADERespondingSpinner.js';
 import { theme } from '../semantic-colors.js';
 
 export const ConfigInitDisplay = ({
@@ -68,7 +68,7 @@ export const ConfigInitDisplay = ({
   return (
     <Box marginTop={1}>
       <Text>
-        <GeminiSpinner /> <Text color={theme.text.primary}>{message}</Text>
+        <RenegadeSpinner /> <Text color={theme.text.primary}>{message}</Text>
       </Text>
     </Box>
   );

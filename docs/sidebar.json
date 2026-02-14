@@ -173,7 +173,7 @@
         "label": "Model configuration",
         "slug": "docs/cli/generation-settings"
       },
-      { "label": "Project context (GEMINI.md)", "slug": "docs/cli/gemini-md" },
+      { "label": "Project context (renegade.md)", "slug": "docs/cli/gemini-md" },
       { "label": "Settings", "slug": "docs/cli/settings" },
       { "label": "System prompt override", "slug": "docs/cli/system-prompt" },
       { "label": "Themes", "slug": "docs/cli/themes" },

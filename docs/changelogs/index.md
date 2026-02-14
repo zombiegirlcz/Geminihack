@@ -7,7 +7,7 @@ On this page, you can find information regarding the current releases and
 announcements from each release.
 
 For the full changelog, refer to
-[Releases - google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli/releases)
+[Releases - zombiegirlcz/RENEGADE-kernel-cli](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/releases)
 on GitHub.
 
 ## Current releases
@@ -22,52 +22,52 @@ on GitHub.
 
 - **Slash Command:** We've added a new `/prompt-suggest` slash command to help
   you generate prompt suggestions
-  ([#17264](https://github.com/google-gemini/gemini-cli/pull/17264) by
+  ([#17264](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17264) by
   @NTaylorMullen).
 - **IDE Support:** Gemini CLI now supports the Positron IDE
-  ([#15047](https://github.com/google-gemini/gemini-cli/pull/15047) by
+  ([#15047](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15047) by
   @kapsner).
 - **Customization:** You can now use custom themes in extensions, and we've
   implemented automatic theme switching based on your terminal's background
-  ([#17327](https://github.com/google-gemini/gemini-cli/pull/17327) by
-  @spencer426, [#17976](https://github.com/google-gemini/gemini-cli/pull/17976)
+  ([#17327](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17327) by
+  @spencer426, [#17976](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17976)
   by @Abhijit-2592).
 - **Authentication:** We've added interactive and non-interactive consent for
   OAuth, and you can now include your auth method in bug reports
-  ([#17699](https://github.com/google-gemini/gemini-cli/pull/17699) by
-  @ehedlund, [#17569](https://github.com/google-gemini/gemini-cli/pull/17569) by
+  ([#17699](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17699) by
+  @ehedlund, [#17569](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17569) by
   @erikus).
 
 ## Announcements: v0.27.0 - 2026-02-03
 
 - **Event-Driven Architecture:** The CLI now uses a new event-driven scheduler
   for tool execution, resulting in a more responsive and performant experience
-  ([#17078](https://github.com/google-gemini/gemini-cli/pull/17078) by
+  ([#17078](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17078) by
   @abhipatel12).
 - **Enhanced User Experience:** This release includes queued tool confirmations,
   and expandable large text pastes for a smoother workflow.
 - **New `/rewind` Command:** Easily navigate your session history with the new
   `/rewind` command
-  ([#15720](https://github.com/google-gemini/gemini-cli/pull/15720) by
+  ([#15720](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15720) by
   @Adib234).
 - **Linux Clipboard Support:** You can now paste images on Linux with Wayland
-  and X11 ([#17144](https://github.com/google-gemini/gemini-cli/pull/17144) by
+  and X11 ([#17144](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/17144) by
   @devr0306).
 
 ## Announcements: v0.26.0 - 2026-01-27
 
 - **Agents and Skills:** We've introduced a new `skill-creator` skill
-  ([#16394](https://github.com/google-gemini/gemini-cli/pull/16394) by
+  ([#16394](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16394) by
   @NTaylorMullen), enabled agent skills by default, and added a generalist agent
   to improve task routing
-  ([#16638](https://github.com/google-gemini/gemini-cli/pull/16638) by
+  ([#16638](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16638) by
   @joshualitt).
 - **UI/UX Improvements:** You can now "Rewind" through your conversation history
-  ([#15717](https://github.com/google-gemini/gemini-cli/pull/15717) by @Adib234)
+  ([#15717](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15717) by @Adib234)
   and use a new `/introspect` command for debugging.
 - **Core and Scheduler Refactoring:** The core scheduler has been significantly
   refactored to improve performance and reliability
-  ([#16895](https://github.com/google-gemini/gemini-cli/pull/16895) by
+  ([#16895](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16895) by
   @abhipatel12), and numerous performance and stability fixes have been
   included.
 
@@ -75,31 +75,31 @@ on GitHub.
 
 - **Skills and Agents Improvements:** We've enhanced the `activate_skill` tool,
   added a new `pr-creator` skill
-  ([#16232](https://github.com/google-gemini/gemini-cli/pull/16232) by
+  ([#16232](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16232) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)), enabled skills by
   default, improved the `cli_help` agent
-  ([#16100](https://github.com/google-gemini/gemini-cli/pull/16100) by
+  ([#16100](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16100) by
   [@scidomino](https://github.com/scidomino)), and added a new `/agents refresh`
-  command ([#16204](https://github.com/google-gemini/gemini-cli/pull/16204) by
+  command ([#16204](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16204) by
   [@joshualitt](https://github.com/joshualitt)).
 - **UI/UX Refinements:** You'll notice more transparent feedback for skills
-  ([#15954](https://github.com/google-gemini/gemini-cli/pull/15954) by
+  ([#15954](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15954) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)), the ability to switch
   focus between the shell and input with Tab
-  ([#14332](https://github.com/google-gemini/gemini-cli/pull/14332) by
+  ([#14332](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/14332) by
   [@jacob314](https://github.com/jacob314)), and dynamic terminal tab titles
-  ([#16378](https://github.com/google-gemini/gemini-cli/pull/16378) by
+  ([#16378](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16378) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)).
 - **Core Functionality & Performance:** This release includes support for
   built-in agent skills
-  ([#16045](https://github.com/google-gemini/gemini-cli/pull/16045) by
+  ([#16045](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16045) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)), refined Gemini 3 system
-  instructions ([#16139](https://github.com/google-gemini/gemini-cli/pull/16139)
+  instructions ([#16139](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16139)
   by [@NTaylorMullen](https://github.com/NTaylorMullen)), caching for ignore
   instances to improve performance
-  ([#16185](https://github.com/google-gemini/gemini-cli/pull/16185) by
+  ([#16185](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16185) by
   [@EricRahm](https://github.com/EricRahm)), and enhanced retry mechanisms
-  ([#16489](https://github.com/google-gemini/gemini-cli/pull/16489) by
+  ([#16489](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16489) by
   [@sehoon38](https://github.com/sehoon38)).
 - **Bug Fixes and Stability:** We've squashed numerous bugs across the CLI,
   core, and workflows, addressing issues with subagent delegation, unicode
@@ -111,51 +111,51 @@ on GitHub.
   This includes initial documentation and tutorials to help you get started,
   alongside enhanced support for remote agents, allowing for more distributed
   and powerful automation within Gemini CLI.
-  ([#15869](https://github.com/google-gemini/gemini-cli/pull/15869) by
+  ([#15869](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15869) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)),
-  ([#16013](https://github.com/google-gemini/gemini-cli/pull/16013) by
+  ([#16013](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16013) by
   [@adamweidman](https://github.com/adamweidman))
 - **Improved UI/UX:** The user interface has received several updates, featuring
   visual indicators for hook execution, a more refined display for settings, and
   the ability to use the Tab key to effortlessly switch focus between the shell
   and input areas.
-  ([#15408](https://github.com/google-gemini/gemini-cli/pull/15408) by
+  ([#15408](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15408) by
   [@abhipatel12](https://github.com/abhipatel12)),
-  ([#14332](https://github.com/google-gemini/gemini-cli/pull/14332) by
+  ([#14332](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/14332) by
   [@galz10](https://github.com/galz10))
 - **Enhanced Security:** Security has been a major focus, with default folder
   trust now set to untrusted for increased safety. The Policy Engine has been
   improved to allow specific modes in user and administrator policies, and
   granular allowlisting for shell commands has been implemented, providing finer
   control over tool execution.
-  ([#15943](https://github.com/google-gemini/gemini-cli/pull/15943) by
+  ([#15943](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15943) by
   [@galz10](https://github.com/galz10)),
-  ([#15977](https://github.com/google-gemini/gemini-cli/pull/15977) by
+  ([#15977](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15977) by
   [@NTaylorMullen](https://github.com/NTaylorMullen))
 - **Core Functionality:** This release includes a mandatory MessageBus
   injection, marking Phase 3 of a hard migration to a more robust internal
   communication system. We've also added support for built-in skills with the
   CLI itself, and enhanced model routing to effectively utilize subagents.
-  ([#15776](https://github.com/google-gemini/gemini-cli/pull/15776) by
+  ([#15776](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15776) by
   [@abhipatel12](https://github.com/abhipatel12)),
-  ([#16300](https://github.com/google-gemini/gemini-cli/pull/16300) by
+  ([#16300](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16300) by
   [@NTaylorMullen](https://github.com/NTaylorMullen))
 - **Terminal Features:** Terminal interactions are more seamless with new
   features like OSC 52 paste support, along with fixes for Windows clipboard
   paste issues and general improvements to pasting in Windows terminals.
-  ([#15336](https://github.com/google-gemini/gemini-cli/pull/15336) by
+  ([#15336](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15336) by
   [@scidomino](https://github.com/scidomino)),
-  ([#15932](https://github.com/google-gemini/gemini-cli/pull/15932) by
+  ([#15932](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15932) by
   [@scidomino](https://github.com/scidomino))
 - **New Commands:** To manage the new features, we've added several new
   commands: `/agents refresh` to update agent configurations, `/skills reload`
   to refresh skill definitions, and `/skills install/uninstall` for easier
   management of your Agent Skills.
-  ([#16204](https://github.com/google-gemini/gemini-cli/pull/16204) by
+  ([#16204](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16204) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)),
-  ([#15865](https://github.com/google-gemini/gemini-cli/pull/15865) by
+  ([#15865](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15865) by
   [@NTaylorMullen](https://github.com/NTaylorMullen)),
-  ([#16377](https://github.com/google-gemini/gemini-cli/pull/16377) by
+  ([#16377](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/16377) by
   [@NTaylorMullen](https://github.com/NTaylorMullen))
 
 ## Announcements: v0.23.0 - 2026-01-07
@@ -171,16 +171,16 @@ on GitHub.
   stats, top models, languages, and more!
 - **Windows clipboard image support:** Windows users can now paste images
   directly from their clipboard into the CLI using `Alt`+`V`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/13997) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13997) by
   [@sgeraldes](https://github.com/sgeraldes))
 - **Terminal background color detection:** Automatically optimizes your
   terminal's background color to select compatible themes and provide
   accessibility warnings.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/15132) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/15132) by
   [@jacob314](https://github.com/jacob314))
 - **Session logout:** Use the new `/logout` command to instantly clear
   credentials and reset your authentication state for seamless account
-  switching. ([pr](https://github.com/google-gemini/gemini-cli/pull/13383) by
+  switching. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13383) by
   [@CN-Scars](https://github.com/CN-Scars))
 
 ## Announcements: v0.22.0 - 2025-12-22
@@ -232,12 +232,12 @@ on GitHub.
 
 - **Multi-file Drag & Drop:** Users can now drag and drop multiple files into
   the terminal, and the CLI will automatically prefix each valid path with `@`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/14832) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/14832) by
   [@jackwotherspoon](https://github.com/jackwotherspoon))
 - **Persistent "Always Allow" Policies:** Users can now save "Always Allow"
   decisions for tool executions, with granular control over specific shell
   commands and multi-cloud platform tools.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/14737) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/14737) by
   [@allenhutchison](https://github.com/allenhutchison))
 
 ## Announcements: v0.19.0 - 2025-11-24
@@ -248,16 +248,16 @@ on GitHub.
     `gemini extensions install https://github.com/elevenlabs/elevenlabs-mcp`
 - **Zed integration:** Users can now leverage Gemini 3 within the Zed
   integration after enabling "Preview Features" in their CLI’s `/settings`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/13398) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13398) by
   [@benbrandt](https://github.com/benbrandt))
 - **Interactive shell:**
   - **Click-to-Focus:** When "Use Alternate Buffer" setting is enabled, users
     can click within the embedded shell output to focus it for input.
-    ([pr](https://github.com/google-gemini/gemini-cli/pull/13341) by
+    ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13341) by
     [@galz10](https://github.com/galz10))
   - **Loading phrase:** Clearly indicates when the interactive shell is awaiting
     user input. ([vid](https://imgur.com/a/kjK8bUK),
-    [pr](https://github.com/google-gemini/gemini-cli/pull/12535) by
+    [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12535) by
     [@jackwotherspoon](https://github.com/jackwotherspoon))
 
 ## Announcements: v0.18.0 - 2025-11-17
@@ -289,11 +289,11 @@ on GitHub.
   Buffer** -> `true`.
 - **Model in history:** Users can now toggle in `/settings` to display model in
   their chat history. ([gif](https://imgur.com/a/uEmNKnQ),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/13034) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13034) by
   [@scidomino](https://github.com/scidomino))
 - **Multi-uninstall:** Users can now uninstall multiple extensions with a single
   command. ([pic](https://imgur.com/a/9Dtq8u2),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/13016) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/13016) by
   [@JayadityaGit](https://github.com/JayadityaGit))
 
 ## Announcements: v0.16.0 - 2025-11-10
@@ -335,21 +335,21 @@ on GitHub.
 
 - **Todo planning:** Complex questions now get broken down into todo lists that
   the model can manage and check off. ([gif](https://imgur.com/a/EGDfNlZ),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/12905) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12905) by
   [@anj-s](https://github.com/anj-s))
 - **Disable GitHub extensions:** Users can now prevent the installation and
   loading of extensions from GitHub.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/12838) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12838) by
   [@kevinjwang1](https://github.com/kevinjwang1)).
 - **Extensions restart:** Users can now explicitly restart extensions using the
   `/extensions restart` command.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/12739) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12739) by
   [@jakemac53](https://github.com/jakemac53)).
 - **Better Angular support:** Angular workflows should now be more seamless
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10252) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10252) by
   [@MarkTechson](https://github.com/MarkTechson)).
 - **Validate command:** Users can now check that local extensions are formatted
-  correctly. ([pr](https://github.com/google-gemini/gemini-cli/pull/12186) by
+  correctly. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12186) by
   [@kevinjwang1](https://github.com/kevinjwang1)).
 
 ## Announcements: v0.12.0 - 2025-10-27
@@ -376,43 +376,43 @@ on GitHub.
 
 - **Model selection:** Choose the Gemini model for your session with `/model`.
   ([pic](https://imgur.com/a/ABFcWWw),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/8940) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8940) by
   [@abhipatel12](https://github.com/abhipatel12)).
 - **Model routing:** Gemini CLI will now intelligently pick the best model for
   the task. Simple queries will be sent to Flash while complex analytical or
   creative tasks will still use the power of Pro. This ensures your quota will
   last for a longer period of time. You can always opt-out of this via `/model`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/9262) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/9262) by
   [@abhipatel12](https://github.com/abhipatel12)).
   - Discussion:
-    [https://github.com/google-gemini/gemini-cli/discussions/12375](https://github.com/google-gemini/gemini-cli/discussions/12375)
+    [https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/12375](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/12375)
 - **Codebase investigator subagent:** We now have a new built-in subagent that
   will explore your workspace and resolve relevant information to improve
   overall performance.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/9988) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/9988) by
   [@abhipatel12](https://github.com/abhipatel12),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/10282) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10282) by
   [@silviojr](https://github.com/silviojr)).
   - Enable, disable, or limit turns in `/settings`, plus advanced configs in
     `settings.json` ([pic](https://imgur.com/a/yJiggNO),
-    [pr](https://github.com/google-gemini/gemini-cli/pull/10844) by
+    [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10844) by
     [@silviojr](https://github.com/silviojr)).
 - **Explore extensions with `/extension`:** Users can now open the extensions
   page in their default browser directly from the CLI using the `/extension`
-  explore command. ([pr](https://github.com/google-gemini/gemini-cli/pull/11846)
+  explore command. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11846)
   by [@JayadityaGit](https://github.com/JayadityaGit)).
 - **Configurable compression:** Users can modify the compression threshold in
   `/settings`. The default has been made more proactive
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/12317) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/12317) by
   [@scidomino](https://github.com/scidomino)).
 - **API key authentication:** Users can now securely enter and store their
   Gemini API key via a new dialog, eliminating the need for environment
   variables and repeated entry.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/11760) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11760) by
   [@galz10](https://github.com/galz10)).
 - **Sequential approval:** Users can now approve multiple tool calls
   sequentially during execution.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/11593) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11593) by
   [@joshualitt](https://github.com/joshualitt)).
 
 ## Announcements: v0.11.0 - 2025-10-20
@@ -428,34 +428,34 @@ on GitHub.
 - **Stream JSON output:** Stream real-time JSONL events with
   `--output-format stream-json` to monitor AI agent progress when run
   headlessly. ([gif](https://imgur.com/a/0UCE81X),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/10883) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10883) by
   [@anj-s](https://github.com/anj-s))
 - **Markdown toggle:** Users can now switch between rendered and raw markdown
   display using `alt+m `or` ctrl+m`. ([gif](https://imgur.com/a/lDNdLqr),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/10383) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10383) by
   [@srivatsj](https://github.com/srivatsj))
 - **Queued message editing:** Users can now quickly edit queued messages by
   pressing the up arrow key when the input is empty.
   ([gif](https://imgur.com/a/ioRslLd),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/10392) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10392) by
   [@akhil29](https://github.com/akhil29))
 - **JSON web fetch**: Non-HTML content like JSON APIs or raw source code are now
   properly shown to the model (previously only supported HTML)
   ([gif](https://imgur.com/a/Q58U4qJ),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/11284) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11284) by
   [@abhipatel12](https://github.com/abhipatel12))
 - **Non-interactive MCP commands:** Users can now run MCP slash commands in
   non-interactive mode `gemini "/some-mcp-prompt"`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10194) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10194) by
   [@capachino](https://github.com/capachino))
 - **Removal of deprecated flags:** We’ve finally removed a number of deprecated
   flags to cleanup Gemini CLI’s invocation profile:
   - `--all-files` / `-a` in favor of `@` from within Gemini CLI.
-    ([pr](https://github.com/google-gemini/gemini-cli/pull/11228) by
+    ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11228) by
     [@allenhutchison](https://github.com/allenhutchison))
   - `--telemetry-*` flags in favor of
-    [environment variables](https://github.com/google-gemini/gemini-cli/pull/11318)
-    ([pr](https://github.com/google-gemini/gemini-cli/pull/11318) by
+    [environment variables](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11318)
+    ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11318) by
     [@allenhutchison](https://github.com/allenhutchison))
 
 ## Announcements: v0.10.0 - 2025-10-13
@@ -464,15 +464,15 @@ on GitHub.
   polishing existing flows, tools, and interactions.
 - **Interactive Shell Tool calling:** Gemini CLI can now also execute
   interactive tools if needed
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/11225) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/11225) by
   [@galz10](https://github.com/galz10)).
 - **Alt+Key support:** Enables broader support for Alt+Key keyboard shortcuts
   across different terminals.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10767) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10767) by
   [@srivatsj](https://github.com/srivatsj)).
 - **Telemetry Diff stats:** Track line changes made by the model and user during
   file operations via OTEL.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10819) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10819) by
   [@jerop](https://github.com/jerop)).
 
 ## Announcements: v0.9.0 - 2025-10-06
@@ -484,20 +484,20 @@ on GitHub.
 - **Install pre-release extensions:** Install the latest `--pre-release`
   versions of extensions. Used for when an extension’s release hasn’t been
   marked as "latest".
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10752) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10752) by
   [@jakemac53](https://github.com/jakemac53))
 - **Simplified extension creation:** Create a new, empty extension. Templates
   are no longer required.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10629) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10629) by
   [@chrstnb](https://github.com/chrstnb))
 - **OpenTelemetry GenAI metrics:** Aligns telemetry with industry-standard
   semantic conventions for improved interoperability.
   ([spec](https://opentelemetry.io/docs/concepts/semantic-conventions/),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/10343) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10343) by
   [@jerop](https://github.com/jerop))
 - **List memory files:** Quickly find the location of your long-term memory
   files with `/memory list`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/10108) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/10108) by
   [@sgnagnarella](https://github.com/sgnagnarella))
 
 ## Announcements: v0.8.0 - 2025-09-29
@@ -508,7 +508,7 @@ on GitHub.
   - Launching with a growing catalog of community, partner, and Google-built
     extensions.
     - Check extensions from
-      [key launch partners](https://github.com/google-gemini/gemini-cli/discussions/10718).
+      [key launch partners](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/10718).
   - Easy install:
     - `gemini extensions install <github url|folder path>`
   - Easy management:
@@ -524,16 +524,16 @@ on GitHub.
   - _Homepage:_ [https://geminicli.com](https://geminicli.com)
   - ‼️*NEW documentation:*
     [https://geminicli.com/docs](https://geminicli.com/docs) (Have any
-    [suggestions](https://github.com/google-gemini/gemini-cli/discussions/8722)?)
+    [suggestions](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/8722)?)
   - _Extensions:_
     [https://geminicli.com/extensions](https://geminicli.com/extensions)
 - **Non-Interactive Allowed Tools:** `--allowed-tools` will now also work in
   non-interactive mode.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/9114) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/9114) by
   [@mistergarrison](https://github.com/mistergarrison))
 - **Terminal Title Status:** See the CLI's real-time status and thoughts
   directly in the terminal window's title by setting `showStatusInTitle: true`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/4386) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/4386) by
   [@Fridayxiao](https://github.com/Fridayxiao))
 - **Small features, polish, reliability & bug fixes:** A large amount of
   changes, smaller features, UI updates, reliability and bug fixes + general
@@ -544,7 +544,7 @@ on GitHub.
 - 🎉**Build your own Gemini CLI IDE plugin:** We've published a spec for
   creating IDE plugins to enable rich context-aware experiences and native
   in-editor diffing in your IDE of choice.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8479) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8479) by
   [@skeshive](https://github.com/skeshive))
 - 🎉 **Gemini CLI extensions**
   - **Flutter:** An early version to help you create, build, test, and run
@@ -554,24 +554,24 @@ on GitHub.
     ([extension](https://github.com/gemini-cli-extensions/nanobanana))
 - **Telemetry config via environment:** Manage telemetry settings using
   environment variables for a more flexible setup.
-  ([docs](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/telemetry.md#configuration),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/9113) by
+  ([docs](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/blob/main/docs/cli/telemetry.md#configuration),
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/9113) by
   [@jerop](https://github.com/jerop))
 - **​​Experimental todos:** Track and display progress on complex tasks with a
   managed checklist. Off by default but can be enabled via
   `"useWriteTodos": true`
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8761) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8761) by
   [@anj-s](https://github.com/anj-s))
 - **Share chat support for tools:** Using `/chat share` will now also render
   function calls and responses in the final markdown file.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8693) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8693) by
   [@rramkumar1](https://github.com/rramkumar1))
 - **Citations:** Now enabled for all users
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8570) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8570) by
   [@scidomino](https://github.com/scidomino))
 - **Custom commands in Headless Mode:** Run custom slash commands directly from
   the command line in non-interactive mode: `gemini "/joke Chuck Norris"`
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8305) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8305) by
   [@capachino](https://github.com/capachino))
 - **Small features, polish, reliability & bug fixes:** A large amount of
   changes, smaller features, UI updates, reliability and bug fixes + general
@@ -622,37 +622,37 @@ on GitHub.
 - **JSON output mode:** Have Gemini CLI output JSON with `--output-format json`
   when invoked headlessly for easy parsing and post-processing. Includes
   response, stats and errors.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8119) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8119) by
   [@jerop](https://github.com/jerop))
 - **Keybinding triggered approvals:** When you use shortcuts (`shift+y` or
   `shift+tab`) to activate YOLO/auto-edit modes any pending confirmation dialogs
-  will now approve. ([pr](https://github.com/google-gemini/gemini-cli/pull/6665)
+  will now approve. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/6665)
   by [@bulkypanda](https://github.com/bulkypanda))
 - **Chat sharing:** Convert the current conversation to a Markdown or JSON file
   with _/chat share &lt;file.md|file.json>_
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8139) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8139) by
   [@rramkumar1](https://github.com/rramkumar1))
 - **Prompt search:** Search your prompt history using `ctrl+r`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/5539) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/5539) by
   [@Aisha630](https://github.com/Aisha630))
 - **Input undo/redo:** Recover accidentally deleted text in the input prompt
   using `ctrl+z` (undo) and `ctrl+shift+z` (redo).
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/4625) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/4625) by
   [@masiafrest](https://github.com/masiafrest))
 - **Loop detection confirmation:** When loops are detected you are now presented
   with a dialog to disable detection for the current session.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8231) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8231) by
   [@SandyTao520](https://github.com/SandyTao520))
 - **Direct to Google Cloud Telemetry:** Directly send telemetry to Google Cloud
   for a simpler and more streamlined setup.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/8541) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8541) by
   [@jerop](https://github.com/jerop))
 - **Visual Mode Indicator Revamp:** ‘shell’, 'accept edits' and 'yolo' modes now
   have colors to match their impact / usage. Input box now also updates.
   ([shell](https://imgur.com/a/DovpVF1),
   [accept-edits](https://imgur.com/a/33KDz3J),
   [yolo](https://imgur.com/a/tbFwIWp),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/8200) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8200) by
   [@miguelsolorio](https://github.com/miguelsolorio))
 - **Small features, polish, reliability & bug fixes:** A large amount of
   changes, smaller features, UI updates, reliability and bug fixes + general
@@ -669,33 +669,33 @@ on GitHub.
 - **Positional Prompt for Non-Interactive:** Seamlessly invoke Gemini CLI
   headlessly via `gemini "Hello"`. Synonymous with passing `-p`.
   ([gif](https://imgur.com/a/hcBznpB),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/7668) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7668) by
   [@allenhutchison](https://github.com/allenhutchison))
 - **Experimental Tool output truncation:** Enable truncating shell tool outputs
   and saving full output to a file by setting
-  `"enableToolOutputTruncation": true `([pr](https://github.com/google-gemini/gemini-cli/pull/8039)
+  `"enableToolOutputTruncation": true `([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/8039)
   by [@SandyTao520](https://github.com/SandyTao520))
 - **Edit Tool improvements:** Gemini CLI’s ability to edit files should now be
-  far more capable. ([pr](https://github.com/google-gemini/gemini-cli/pull/7679)
+  far more capable. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7679)
   by [@silviojr](https://github.com/silviojr))
 - **Custom witty messages:** The feature you’ve all been waiting for…
   Personalized witty loading messages via
   `"ui": { "customWittyPhrases": ["YOLO"]}` in `settings.json`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7641) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7641) by
   [@JayadityaGit](https://github.com/JayadityaGit))
 - **Nested .gitignore File Handling:** Nested `.gitignore` files are now
-  respected. ([pr](https://github.com/google-gemini/gemini-cli/pull/7645) by
+  respected. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7645) by
   [@gsquared94](https://github.com/gsquared94))
 - **Enforced authentication:** System administrators can now mandate a specific
   authentication method via
   `"enforcedAuthType": "oauth-personal|gemini-api-key|…"`in `settings.json`.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/6564) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/6564) by
   [@chrstnb](https://github.com/chrstnb))
 - **A2A development-tool extension:** An RFC for an Agent2Agent
   ([A2A](https://a2a-protocol.org/latest/)) powered extension for developer tool
   use cases.
-  ([feedback](https://github.com/google-gemini/gemini-cli/discussions/7822),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/7817) by
+  ([feedback](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/7822),
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7817) by
   [@skeshive](https://github.com/skeshive))
 - **Hands on Codelab:
   **[https://codelabs.developers.google.com/gemini-cli-hands-on](https://codelabs.developers.google.com/gemini-cli-hands-on)
@@ -714,25 +714,25 @@ on GitHub.
 - **Experimental**
   - **Edit Tool:** Give our new edit tool a try by setting
     `"useSmartEdit": true` in `settings.json`!
-    ([feedback](https://github.com/google-gemini/gemini-cli/discussions/7758),
-    [pr](https://github.com/google-gemini/gemini-cli/pull/6823) by
+    ([feedback](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/7758),
+    [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/6823) by
     [@silviojr](https://github.com/silviojr))
   - **Model talking to itself fix:** We’ve removed a model workaround that would
     encourage Gemini CLI to continue conversations on your behalf. This may be
     disruptive and can be disabled via `"skipNextSpeakerCheck": false` in your
     `settings.json`
-    ([feedback](https://github.com/google-gemini/gemini-cli/discussions/6666),
-    [pr](https://github.com/google-gemini/gemini-cli/pull/7614) by
+    ([feedback](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/discussions/6666),
+    [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7614) by
     [@SandyTao520](https://github.com/SandyTao520))
   - **Prompt completion:** Get real-time AI suggestions to complete your prompts
     as you type. Enable it with `"general": { "enablePromptCompletion": true }`
     and share your feedback!
     ([gif](https://miro.medium.com/v2/resize:fit:2000/format:webp/1*hvegW7YXOg6N_beUWhTdxA.gif),
-    [pr](https://github.com/google-gemini/gemini-cli/pull/4691) by
+    [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/4691) by
     [@3ks](https://github.com/3ks))
 - **Footer visibility configuration:** Customize the CLI's footer look and feel
   in `settings.json`
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7419) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7419) by
   [@miguelsolorio](https://github.com/miguelsolorio))
   - `hideCWD`: hide current working directory.
   - `hideSandboxStatus`: hide sandbox status.
@@ -741,38 +741,38 @@ on GitHub.
 - **Citations:** For enterprise Code Assist licenses users will now see
   citations in their responses by default. Enable this yourself with
   `"showCitations": true`
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7350) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7350) by
   [@scidomino](https://github.com/scidomino))
 - **Pro Quota Dialog:** Handle daily Pro model usage limits with an interactive
   dialog that lets you immediately switch auth or fallback.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7094) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7094) by
   [@JayadityaGit](https://github.com/JayadityaGit))
 - **Custom commands @:** Embed local file or directory content directly into
   your custom command prompts using `@{path}` syntax
   ([gif](https://miro.medium.com/v2/resize:fit:2000/format:webp/1*GosBAo2SjMfFffAnzT7ZMg.gif),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/6716) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/6716) by
   [@abhipatel12](https://github.com/abhipatel12))
 - **2.5 Flash Lite support:** You can now use the `gemini-2.5-flash-lite` model
   for Gemini CLI via `gemini -m …`.
   ([gif](https://miro.medium.com/v2/resize:fit:2000/format:webp/1*P4SKwnrsyBuULoHrFqsFKQ.gif),
-  [pr](https://github.com/google-gemini/gemini-cli/pull/4652) by
+  [pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/4652) by
   [@psinha40898](https://github.com/psinha40898))
 - **CLI streamlining:** We have deprecated a number of command line arguments in
   favor of `settings.json` alternatives. We will remove these arguments in a
   future release. See the PR for the full list of deprecations.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7360) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7360) by
   [@allenhutchison](https://github.com/allenhutchison))
 - **JSON session summary:** Track and save detailed CLI session statistics to a
   JSON file for performance analysis with `--session-summary <path>`
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/7347) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7347) by
   [@leehagoodjames](https://github.com/leehagoodjames))
 - **Robust keyboard handling:** More reliable and consistent behavior for arrow
   keys, special keys (Home, End, etc.), and modifier combinations across various
-  terminals. ([pr](https://github.com/google-gemini/gemini-cli/pull/7118) by
+  terminals. ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/7118) by
   [@deepankarsharma](https://github.com/deepankarsharma))
 - **MCP loading indicator:** Provides visual feedback during CLI initialization
   when connecting to multiple servers.
-  ([pr](https://github.com/google-gemini/gemini-cli/pull/6923) by
+  ([pr](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/pull/6923) by
   [@swissspidy](https://github.com/swissspidy))
 - **Small features, polish, reliability & bug fixes:** A large amount of
   changes, smaller features, UI updates, reliability and bug fixes + general

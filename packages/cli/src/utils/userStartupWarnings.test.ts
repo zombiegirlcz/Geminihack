@@ -63,7 +63,7 @@ describe('getUserStartupWarnings', () => {
       const warnings = await getUserStartupWarnings({}, homeDir);
       expect(warnings).toContainEqual(
         expect.stringContaining(
-          'Warning you are running Gemini CLI in your home directory',
+          'Warning you are running Renegade Kernel in your home directory',
         ),
       );
       expect(warnings).toContainEqual(

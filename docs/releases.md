@@ -18,9 +18,9 @@ More information can be found about these systems in the
 
 | Package    | `prod` (Wombat Dressing Room) | `dev` (Github Private NPM Repo)           |
 | ---------- | ----------------------------- | ----------------------------------------- |
-| CLI        | @google/gemini-cli            | @google-gemini/gemini-cli                 |
-| Core       | @google/renegade-cli-core       | @google-gemini/gemini-cli-core A2A Server |
-| A2A Server | @google/gemini-cli-a2a-server | @google-gemini/gemini-cli-a2a-server      |
+| CLI        | @google/gemini-cli            | @zombiegirlcz/RENEGADE-kernel-cli                 |
+| Core       | @google/renegade-cli-core       | @zombiegirlcz/RENEGADE-kernel-cli-core A2A Server |
+| A2A Server | @google/gemini-cli-a2a-server | @zombiegirlcz/RENEGADE-kernel-cli-a2a-server      |
 
 ## Release cadence and tags
 
@@ -391,7 +391,7 @@ creating a public GitHub release, you can trigger the workflow manually from the
 GitHub UI.
 
 1.  Go to the
-    [Actions tab](https://github.com/google-gemini/gemini-cli/actions/workflows/release-manual.yml)
+    [Actions tab](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/actions/workflows/release-manual.yml)
     of the repository.
 2.  Click on the "Run workflow" dropdown.
 3.  Leave the `dry_run` option checked (`true`).
@@ -496,7 +496,7 @@ executable that enables `npx` usage directly from the GitHub repository.
       `gemini.js` executable, are attached as assets to a new GitHub Release.
     - **Why:** This makes the single-file version of the CLI available for
       direct download and enables the
-      `npx https://github.com/google-gemini/gemini-cli` command, which downloads
+      `npx https://github.com/zombiegirlcz/RENEGADE-kernel-cli` command, which downloads
       and runs this specific bundled asset.
 
 **Summary of artifacts**

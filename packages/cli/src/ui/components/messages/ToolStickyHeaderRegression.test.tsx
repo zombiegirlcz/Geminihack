@@ -26,8 +26,8 @@ vi.mock('../AnsiOutput.js', () => ({
   AnsiOutputText: () => <Text>MockAnsiOutput</Text>,
 }));
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
+vi.mock('../RenegadeRespondingSpinner.js', () => ({
+  RenegadeRespondingSpinner: () => <Text>MockRespondingSpinner</Text>,
 }));
 
 vi.mock('./DiffRenderer.js', () => ({

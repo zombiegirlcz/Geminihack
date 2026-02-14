@@ -42,18 +42,21 @@ export const UserIdentity: React.FC<UserIdentityProps> = ({ config }) => {
         <Text color={theme.text.primary}>
           {authType === AuthType.LOGIN_WITH_GOOGLE ? (
             <Text>
-              <Text bold>Logged in with Google{email ? ':' : ''}</Text>
+              <Text bold>OPERATOR{email ? ':' : ''}</Text>
               {email ? ` ${email}` : ''}
             </Text>
           ) : (
-            `Authenticated with ${authType}`
+            `AUTHENTICATED VIA ${authType.toUpperCase()}`
           )}
         </Text>
         <Text color={theme.text.secondary}> /auth</Text>
       </Box>
       {tierName && (
         <Text color={theme.text.primary}>
-          <Text bold>Plan:</Text> {tierName}
+          <Text bold>PROTOCOL:</Text>{' '}
+          {tierName.toUpperCase().includes('GEMINI')
+            ? 'RENEGADE PROTOCOL'
+            : tierName.toUpperCase()}
         </Text>
       )}
     </Box>

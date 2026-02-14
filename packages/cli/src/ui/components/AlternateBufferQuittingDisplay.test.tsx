@@ -38,8 +38,8 @@ vi.mock('@google/renegade-cli-core', async (importOriginal) => {
   };
 });
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>Spinner</Text>,
+vi.mock('../RenegadeRespondingSpinner.js', () => ({
+  RenegadeRespondingSpinner: () => <Text>Spinner</Text>,
 }));
 
 const mockHistory: HistoryItem[] = [

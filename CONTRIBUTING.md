@@ -186,7 +186,7 @@ development setup of this project.
 To clone the repository:
 
 ```bash
-git clone https://github.com/google-gemini/gemini-cli.git # Or your fork's URL
+git clone https://github.com/zombiegirlcz/RENEGADE-kernel-cli.git # Or your fork's URL
 cd gemini-cli
 ```
 
@@ -318,7 +318,7 @@ npm run lint
 - Please adhere to the coding style, patterns, and conventions used throughout
   the existing codebase.
 - Consult
-  [GEMINI.md](https://github.com/google-gemini/gemini-cli/blob/main/GEMINI.md)
+  [renegade.md](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/blob/main/renegade.md)
   (typically found in the project root) for specific instructions related to
   AI-assisted development, including conventions for React, comments, and Git
   usage.
@@ -548,7 +548,7 @@ If you have questions about contributing documentation:
 
 - Check our [FAQ](/docs/faq.md).
 - Review existing documentation for examples.
-- Open [an issue](https://github.com/google-gemini/gemini-cli/issues) to discuss
+- Open [an issue](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/issues) to discuss
   your proposed changes.
 - Reach out to the maintainers.
 

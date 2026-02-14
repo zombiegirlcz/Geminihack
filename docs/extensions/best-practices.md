@@ -44,9 +44,9 @@ gemini extensions link .
 Changes to your code (after rebuilding) will be immediately available in the CLI
 on restart.
 
-### Use `GEMINI.md` effectively
+### Use `renegade.md` effectively
 
-Your `GEMINI.md` file provides context to the model. Keep it focused:
+Your `renegade.md` file provides context to the model. Keep it focused:
 
 - **Do:** Explain high-level goals and how to use the provided tools.
 - **Don't:** Dump your entire documentation.

@@ -26,9 +26,9 @@ import {
 } from '@google/renegade-cli-core';
 import { Text } from 'ink';
 
-// Mock GeminiSpinner
-vi.mock('./GeminiRespondingSpinner.js', () => ({
-  GeminiSpinner: () => <Text>Spinner</Text>,
+// Mock RenegadeSpinner
+vi.mock('./RenegadeRespondingSpinner.js', () => ({
+  RenegadeSpinner: () => <Text>Spinner</Text>,
 }));
 
 describe('ConfigInitDisplay', () => {

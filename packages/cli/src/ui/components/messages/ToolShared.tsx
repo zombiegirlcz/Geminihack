@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import { ToolCallStatus, mapCoreStatusToDisplayStatus } from '../../types.js';
-import { GeminiRespondingSpinner } from '../RENEGADERespondingSpinner.js';
+import { RenegadeRespondingSpinner } from '../RENEGADERespondingSpinner.js';
 import {
   SHELL_COMMAND_NAME,
   SHELL_NAME,
@@ -149,7 +149,7 @@ export const ToolStatusIndicator: React.FC<ToolStatusIndicatorProps> = ({
         <Text color={theme.status.success}>{TOOL_STATUS.PENDING}</Text>
       )}
       {status === ToolCallStatus.Executing && (
-        <GeminiRespondingSpinner
+        <RenegadeRespondingSpinner
           spinnerType="toggle"
           nonRespondingDisplay={TOOL_STATUS.EXECUTING}
         />

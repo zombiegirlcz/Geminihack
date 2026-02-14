@@ -46,7 +46,7 @@ describe('<ContextSummaryDisplay />', () => {
     const props = {
       ...baseProps,
       geminiMdFileCount: 1,
-      contextFileNames: ['GEMINI.md'],
+      contextFileNames: ['renegade.md'],
       mcpServers: { 'test-server': { command: 'test' } },
       ideContext: {
         workspaceState: {
@@ -63,7 +63,7 @@ describe('<ContextSummaryDisplay />', () => {
     const props = {
       ...baseProps,
       geminiMdFileCount: 1,
-      contextFileNames: ['GEMINI.md'],
+      contextFileNames: ['renegade.md'],
       mcpServers: { 'test-server': { command: 'test' } },
       ideContext: {
         workspaceState: {
@@ -80,7 +80,7 @@ describe('<ContextSummaryDisplay />', () => {
     const props = {
       ...baseProps,
       geminiMdFileCount: 1,
-      contextFileNames: ['GEMINI.md'],
+      contextFileNames: ['renegade.md'],
       mcpServers: { 'test-server': { command: 'test' } },
       ideContext: {
         workspaceState: {

@@ -1,6 +1,6 @@
 # Themes Example
 
-This is an example of a Gemini CLI extension that adds a custom theme.
+This is an example of a Renegade Kernel extension that adds a custom theme.
 
 ## How to use
 

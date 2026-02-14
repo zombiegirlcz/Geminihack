@@ -328,7 +328,7 @@ export function formatValidationError(
 
   lines.push('Please fix the configuration.');
   lines.push(
-    'See: https://github.com/google-gemini/gemini-cli/blob/main/docs/get-started/configuration.md',
+    'See: https://github.com/zombiegirlcz/RENEGADE-kernel-cli/blob/main/docs/get-started/configuration.md',
   );
 
   return lines.join('\n');

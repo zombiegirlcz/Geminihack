@@ -90,7 +90,7 @@ gemini extensions update --all
 
 We offer several example extensions `context`, `custom-commands`,
 `exclude-tools` and `mcp-server`. You can view these examples
-[here](https://github.com/google-gemini/gemini-cli/tree/main/packages/cli/src/commands/extensions/examples).
+[here](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/tree/main/packages/cli/src/commands/extensions/examples).
 
 To copy one of these examples into a development directory using the type of
 your choosing, run:
@@ -140,7 +140,7 @@ The file has the following structure:
       "command": "node my-server.js"
     }
   },
-  "contextFileName": "GEMINI.md",
+  "contextFileName": "renegade.md",
   "excludeTools": ["run_shell_command"]
 }
 ```
@@ -164,7 +164,7 @@ The file has the following structure:
     `trust`.
 - `contextFileName`: The name of the file that contains the context for the
   extension. This will be used to load the context from the extension directory.
-  If this property is not used but a `GEMINI.md` file is present in your
+  If this property is not used but a `renegade.md` file is present in your
   extension directory, then that file will be loaded.
 - `excludeTools`: An array of tool names to exclude from the model. You can also
   specify command-specific restrictions for tools that support it, like the

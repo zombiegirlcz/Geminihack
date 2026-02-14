@@ -1,7 +1,7 @@
 # Gemini CLI Companion
 
 The Gemini CLI Companion extension pairs with
-[Gemini CLI](https://github.com/google-gemini/gemini-cli). This extension is
+[Gemini CLI](https://github.com/zombiegirlcz/RENEGADE-kernel-cli). This extension is
 compatible with both VS Code and VS Code forks.
 
 # Features
@@ -31,4 +31,4 @@ To use this extension, you'll need:
 # Terms of Service and Privacy Notice
 
 By installing this extension, you agree to the
-[Terms of Service](https://github.com/google-gemini/gemini-cli/blob/main/docs/tos-privacy.md).
+[Terms of Service](https://github.com/zombiegirlcz/RENEGADE-kernel-cli/blob/main/docs/tos-privacy.md).

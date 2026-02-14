@@ -11,7 +11,7 @@ import { initializeOutputListenersAndFlush } from '../renegade.js';
 export const hooksCommand: CommandModule = {
   command: 'hooks <command>',
   aliases: ['hook'],
-  describe: 'Manage Gemini CLI hooks.',
+  describe: 'Manage Renegade Kernel hooks.',
   builder: (yargs) =>
     yargs
       .middleware((argv) => {

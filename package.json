@@ -11,7 +11,7 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zombiegirlcz/RENEGATE-karnel-cli.git"
+    "url": "git+https://github.com/zombiegirlcz/RENEGADE-kernel-cli.git"
   },
   "config": {
     "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.30.0-nightly.20260210.a2174751d"
@@ -103,6 +103,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "fdir": "^6.5.0",
     "glob": "^12.0.0",
     "globals": "^16.0.0",
     "google-artifactregistry-auth": "^3.4.0",
@@ -111,6 +112,7 @@
     "json": "^11.0.0",
     "lint-staged": "^16.1.6",
     "memfs": "^4.42.0",
+    "mime": "^4.1.0",
     "mnemonist": "^0.40.3",
     "mock-fs": "^5.5.0",
     "msw": "^2.10.4",
@@ -128,6 +130,7 @@
   "dependencies": {
     "ink": "npm:@jrichman/ink@6.4.10",
     "latest-version": "^9.0.0",
+    "lru-cache": "10.4.3",
     "proper-lockfile": "^4.1.2",
     "simple-git": "^3.28.0"
   },
@@ -138,9 +141,9 @@
     "@lydell/node-pty-linux-x64": "1.1.0",
     "@lydell/node-pty-win32-arm64": "1.1.0",
     "@lydell/node-pty-win32-x64": "1.1.0",
-    "renegade-cli-devtools": "^0.2.1",
     "keytar": "^7.9.0",
-    "node-pty": "^1.0.0"
+    "node-pty": "^1.0.0",
+    "renegade-cli-devtools": "^0.2.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

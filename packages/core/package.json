@@ -1,11 +1,11 @@
 {
   "name": "@google/renegade-cli-core",
   "version": "0.30.0-nightly.20260210.a2174751d",
-  "description": "Gemini CLI Core",
+  "description": "Renegade Kernel Core",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/zombiegirlcz/RENEGADE-kernel-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -63,7 +63,7 @@
     "ignore": "^7.0.0",
     "js-yaml": "^4.1.1",
     "marked": "^15.0.12",
-    "mime": "4.0.7",
+    "mime": "^3.0.0",
     "mnemonist": "^0.40.3",
     "open": "^10.1.2",
     "picomatch": "^4.0.1",

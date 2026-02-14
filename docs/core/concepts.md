@@ -33,7 +33,7 @@ writing a file).
 environment. Gemini CLI provides context through several mechanisms:
 
 - **Conversation history:** The chat log of the current session.
-- **Project context (`GEMINI.md`):** Persistent instructions and rules defined
+- **Project context (`renegade.md`):** Persistent instructions and rules defined
   in your project's root or subdirectories.
 - **File content:** Files you explicitly reference (e.g., `@src/app.ts`) or that
   the agent reads using tools.

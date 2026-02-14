@@ -1,7 +1,7 @@
 # Manage context and memory
 
 Control what Gemini CLI knows about you and your projects. In this guide, you'll
-learn how to define project-wide rules with `GEMINI.md`, teach the agent
+learn how to define project-wide rules with `renegade.md`, teach the agent
 persistent facts, and inspect the active context.
 
 ## Prerequisites
@@ -25,15 +25,15 @@ You'll use these features when you want to:
 - **Remember facts:** Save details like "My database port is 5432" so you don't
   have to repeat them.
 
-## How to define project-wide rules (GEMINI.md)
+## How to define project-wide rules (renegade.md)
 
-The most powerful way to control the agent's behavior is through `GEMINI.md`
+The most powerful way to control the agent's behavior is through `renegade.md`
 files. These are Markdown files containing instructions that are automatically
 loaded into every conversation.
 
 ### Scenario: Create a project context file
 
-1.  In the root of your project, create a file named `GEMINI.md`.
+1.  In the root of your project, create a file named `renegade.md`.
 
 2.  Add your instructions:
 
@@ -53,9 +53,9 @@ loaded into every conversation.
 Context is loaded hierarchically. This allows you to have general rules for
 everything and specific rules for sub-projects.
 
-1.  **Global:** `~/.gemini/GEMINI.md` (Rules for _every_ project you work on).
-2.  **Project Root:** `./GEMINI.md` (Rules for the current repository).
-3.  **Subdirectory:** `./src/GEMINI.md` (Rules specific to the `src` folder).
+1.  **Global:** `~/.gemini/renegade.md` (Rules for _every_ project you work on).
+2.  **Project Root:** `./renegade.md` (Rules for the current repository).
+3.  **Subdirectory:** `./src/renegade.md` (Rules specific to the `src` folder).
 
 **Example:** You might set "Always use strict typing" in your global config, but
 "Use Python 3.11" only in your backend repository.
@@ -93,7 +93,7 @@ is following.
 ### Scenario: View active context
 
 To see the full, concatenated set of instructions currently loaded (from all
-`GEMINI.md` files and saved memories), use the `/memory show` command.
+`renegade.md` files and saved memories), use the `/memory show` command.
 
 **Command:** `/memory show`
 
@@ -102,19 +102,19 @@ excellent for debugging why the agent might be ignoring a rule.
 
 ### Scenario: Refresh context
 
-If you edit a `GEMINI.md` file while a session is running, the agent won't know
+If you edit a `renegade.md` file while a session is running, the agent won't know
 immediately. Force a reload with:
 
 **Command:** `/memory refresh`
 
 ## Best practices
 
-- **Keep it focused:** Don't dump your entire internal wiki into `GEMINI.md`.
+- **Keep it focused:** Don't dump your entire internal wiki into `renegade.md`.
   Keep instructions actionable and relevant to code generation.
 - **Use negative constraints:** Explicitly telling the agent what _not_ to do
   (e.g., "Do not use class components") is often more effective than vague
   positive instructions.
-- **Review often:** Periodically check your `GEMINI.md` files to remove outdated
+- **Review often:** Periodically check your `renegade.md` files to remove outdated
   rules.
 
 ## Next steps

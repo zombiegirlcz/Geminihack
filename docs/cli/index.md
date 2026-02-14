@@ -50,7 +50,7 @@ Technical reference documentation for each capability of Gemini CLI.
 - **[/help](../cli/commands.md#help-or):** Display help information.
 - **[/hooks](../hooks/index.md):** Manage hooks for lifecycle events.
 - **[/ide](../ide-integration/index.md):** Manage IDE integration.
-- **[/init](../cli/commands.md#init):** Create a GEMINI.md context file.
+- **[/init](../cli/commands.md#init):** Create a renegade.md context file.
 - **[/mcp](../tools/mcp-server.md):** Manage Model Context Protocol servers.
 - **[/memory](../cli/commands.md#memory):** Manage instructional context.
 - **[/model](./model.md):** Choose Gemini model.
@@ -106,7 +106,7 @@ Settings and customization options for Gemini CLI.
   reference.
 - **[Model configuration](./generation-settings.md):** Fine-tune generation
   parameters like temperature and thinking budget.
-- **[Project context (GEMINI.md)](./gemini-md.md):** Technical hierarchy of
+- **[Project context (renegade.md)](./gemini-md.md):** Technical hierarchy of
   context files.
 - **[Settings](./settings.md):** Full `settings.json` schema.
 - **[System prompt override](./system-prompt.md):** Instruction replacement
