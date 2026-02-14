@@ -130,7 +130,7 @@
   "dependencies": {
     "ink": "npm:@jrichman/ink@6.4.10",
     "latest-version": "^9.0.0",
-    "lru-cache": "10.4.3",
+    "lru-cache": "11.2.6",
     "proper-lockfile": "^4.1.2",
     "simple-git": "^3.28.0"
   },
