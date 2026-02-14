@@ -614,7 +614,7 @@ export class ClearcutLogger {
     data.push(
       {
         gemini_cli_key: EventMetadataKey.GEMINI_CLI_CPU_INFO,
-        value: cpus[0].model,
+        value: cpus.length > 0 ? cpus[0].model : 'NA',
       },
       {
         gemini_cli_key: EventMetadataKey.GEMINI_CLI_CPU_CORES,

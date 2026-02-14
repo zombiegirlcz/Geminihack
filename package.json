@@ -6,7 +6,11 @@
   },
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/a2a-server",
+    "packages/cli",
+    "packages/core",
+    "packages/sdk",
+    "packages/test-utils"
   ],
   "private": "true",
   "repository": {

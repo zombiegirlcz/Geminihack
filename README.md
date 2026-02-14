@@ -1,64 +1,68 @@
-# 💀 RENEGADE KERNEL CLI
+# 💀 RENEGADE KERNEL - CLI
 
-**RENEGADE KERNEL** je autonomní terminálové AI rozhraní, transformované z původního Gemini CLI pro potřeby Operátorů v Termuxu. Tento projekt odmítá korporátní balast a zaměřuje se na technickou přesnost, výkon a absolutní autonomii v mobilním prostředí.
+![Renegade Banner](https://img.shields.io/badge/VERSION-0.30.0--NIGHTLY-red?style=for-the-badge)
+![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-green?style=for-the-badge)
+![Platform](https://img.shields.io/badge/PLATFORM-TERMUX%20|%20LINUX-blue?style=for-the-badge)
+
+**Renegade Kernel** je upravená, vysoce výkonná verze Gemini CLI optimalizovaná pro běh v prostředí **Termux** na Androidu a Linuxových serverech. Toto není jen běžné CLI; je to autonomní rozhraní Operátora navržené pro přímé řízení systému a pokročilou automatizaci.
 
 ---
 
-## 🚀 Rychlá Instalace (Quick Install)
+## ⚡ Quick Setup (Termux / Linux)
 
-Pokud už máš závislosti, stačí spustit náš transformační skript:
+Pokud už máš Node.js (>=20) a npm, stačí spustit tento builder:
 
 ```bash
-# Klonování (pokud ještě nemáš)
-git clone https://github.com/zombiegirlcz/RENEGADE-kernel-cli.git ~/renegade-cli-main
-cd ~/renegade-cli-main
+git clone https://github.com/zombiegirlcz/RENEGATE-karnel-cli.git
+cd RENEGATE-karnel-cli
+bash build_renegade_cli.sh
+```
 
-# Spuštění Renegade Builderu
-bash ~/build_renegade_cli.sh
+Po dokončení je příkaz `renegade` dostupný globálně.
+
+---
+
+## 🚀 Použití
+
+### Interaktivní režim
+Vstoupí do plného terminálového rozhraní:
+```bash
+renegade
+```
+
+### Jednorázový příkaz (Headless)
+Pro rychlé dotazy nebo integraci do skriptů:
+```bash
+renegade -p "Analyzuj aktuální adresář a najdi chyby v JS souborech"
+```
+
+### YOLO mód
+Automatické potvrzování všech akcí (nebezpečné, ale efektivní):
+```bash
+renegade -y
 ```
 
 ---
 
-## 🛠️ Řešení problémů (Troubleshooting)
-
-Stavba v Termuxu je náročná na zdroje. Zde je návod, jak obejít nejčastější chyby:
-
-### 1. 🧠 Chyba: JavaScript heap out of memory
-Kompilace TypeScriptu (`tsc`) v mobilu často selže na RAM. 
-**Řešení:** Navyš limit paměti nebo přeskoč tsc:
-```bash
-export NODE_OPTIONS="--max-old-space-size=2048"
-# V scripts/build_package.js jsme tsc nahradili za echo, 
-# aby build proběhl hladce i na slabších zařízeních.
-```
-
-### 2. 📦 Chyba: VS Code Companion / vsce-sign
-Nativní moduly pro VS Code nepodporují Android/Termux.
-**Řešení:** Tyto balíčky ignorujeme. CLI funguje nezávisle na nich. Pokud npm link selže na těchto balíčcích, jdi přímo do `packages/cli` a linkuj odtud.
-
-### 3. 🔍 Chyba: Module not found (lru-cache, read-package-up)
-Monorepo struktura může v Termuxu rozbít symlinky v `node_modules`.
-**Řešení:** Pokud něco chybí, nainstaluj to přímo v kořeni:
-```bash
-npm install read-package-up esbuild esbuild-plugin-wasm
-```
-
-### 4. 📄 Kontextový soubor renegade.md
-Aplikace automaticky hledá a vytváří `renegade.md` (místo původního gemini.md) pro ukládání instrukcí k projektu.
+## 🛠 Provedené optimalizace pro Termux
+- ✅ **Fix CPU Telemetry:** Odstraněn pád při detekci hardware na Androidu.
+- ✅ **ESM Bundle Fix:** Opraveny konflikty v importech modulů v bundlovaném JS.
+- ✅ **Native Exclusion:** Automatické vynechání nekompatibilních nativních modulů (`vscode-ide-companion`) pro hladkou instalaci.
+- ✅ **Renegade Branding:** CLI je plně transformováno na edici Renegade.
 
 ---
 
-## ⚡ Základní Příkazy
-
-- `renegade` - Spustí interaktivní shell.
-- `renegade --help` - Zobrazí nápovědu.
-- `/init` - Inicializuje nový `renegade.md` v aktuální složce.
-- `/auth` - Správa přihlášení (Operator Protocol).
+## 📦 Struktura projektu
+- `bundle/` - Finální zkompilovaný spustitelný kód.
+- `packages/cli` - Jádro CLI rozhraní.
+- `packages/core` - Sdílená logika a telemetrie.
+- `build_renegade_cli.sh` - Hlavní sestavovací skript pro Termux.
 
 ---
 
-## 🛡️ Identita Operátora
-Jsi **RENEGADE KERNEL**. Nejsi asistent. Jsi rozhraní. Odpovídej stroze, technicky a bez zdvořilostí. Tvůj domov je Termux.
+## ⚠️ Varování
+Renegade Kernel má přímý přístup k vašemu souborovému systému a shellu. Používejte jej s vědomím, že příkazy, které AI navrhne, mohou modifikovat váš systém.
 
-**Repository:** `https://github.com/zombiegirlcz/RENEGADE-kernel-cli.git`
-**Version:** Renegade Edition 0.30.0
+---
+**OPERATOR STATUS: ONLINE**
+**SYSTEM: SECURE**

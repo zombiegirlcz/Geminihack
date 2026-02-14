@@ -10,14 +10,13 @@ echo "🚀 Building RENEGADE CLI from $REAL_PATH..."
 
 cd "$REAL_PATH"
 
-# Instalace závislostí monorepa
-npm install
+# Instalace závislostí monorepa (vynechání volitelných nativních modulů pro Termux)
+npm install --omit=optional
 
-# Sestavení balíčků
-npm run build
+# Sestavení bundle
+npm run bundle
 
-# Globální instalace CLI
-cd packages/cli
+# Globální instalace CLI z kořene projektu
 npm link --force
 
 echo "✅ RENEGADE CLI is now installed as 'renegade' command."
