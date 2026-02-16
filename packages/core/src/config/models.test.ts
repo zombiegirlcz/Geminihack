@@ -20,9 +20,11 @@ import {
   GEMINI_MODEL_ALIAS_PRO,
   GEMINI_MODEL_ALIAS_FLASH,
   GEMINI_MODEL_ALIAS_AUTO,
+  GEMINI_MODEL_ALIAS_BANANA,
   PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_MODEL_AUTO,
   DEFAULT_GEMINI_MODEL_AUTO,
+  GEMINI_NANO_BANANA_MODEL,
 } from './models.js';
 
 describe('isGemini3Model', () => {
@@ -69,6 +71,12 @@ describe('getDisplayString', () => {
     );
   });
 
+  it('should return Gemini Nano Banana 🍌 for banana alias', () => {
+    expect(getDisplayString(GEMINI_MODEL_ALIAS_BANANA)).toBe(
+      'Gemini Nano Banana 🍌',
+    );
+  });
+
   it('should return the model name as is for other models', () => {
     expect(getDisplayString('custom-model')).toBe('custom-model');
     expect(getDisplayString(DEFAULT_GEMINI_FLASH_LITE_MODEL)).toBe(
@@ -112,6 +120,9 @@ describe('resolveModel', () => {
       );
       expect(resolveModel(DEFAULT_GEMINI_FLASH_LITE_MODEL)).toBe(
         DEFAULT_GEMINI_FLASH_LITE_MODEL,
+      );
+      expect(resolveModel(GEMINI_MODEL_ALIAS_BANANA)).toBe(
+        GEMINI_NANO_BANANA_MODEL,
       );
     });
 

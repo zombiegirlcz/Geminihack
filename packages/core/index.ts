@@ -12,6 +12,8 @@ export {
   DEFAULT_GEMINI_FLASH_MODEL,
   DEFAULT_GEMINI_FLASH_LITE_MODEL,
   DEFAULT_GEMINI_EMBEDDING_MODEL,
+  GEMINI_NANO_BANANA_MODEL,
+  GEMINI_MODEL_ALIAS_BANANA,
 } from './src/config/models.js';
 export {
   serializeTerminalToObject,

@@ -9,6 +9,7 @@ export const PREVIEW_GEMINI_FLASH_MODEL = 'gemini-3-flash-preview';
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-pro';
 export const DEFAULT_GEMINI_FLASH_MODEL = 'gemini-2.5-flash';
 export const DEFAULT_GEMINI_FLASH_LITE_MODEL = 'gemini-2.5-flash-lite';
+export const GEMINI_NANO_BANANA_MODEL = 'gemini-nano-banana';
 
 export const VALID_GEMINI_MODELS = new Set([
   PREVIEW_GEMINI_MODEL,
@@ -16,6 +17,7 @@ export const VALID_GEMINI_MODELS = new Set([
   DEFAULT_GEMINI_MODEL,
   DEFAULT_GEMINI_FLASH_MODEL,
   DEFAULT_GEMINI_FLASH_LITE_MODEL,
+  GEMINI_NANO_BANANA_MODEL,
 ]);
 
 export const PREVIEW_GEMINI_MODEL_AUTO = 'auto-gemini-3';
@@ -26,6 +28,7 @@ export const GEMINI_MODEL_ALIAS_AUTO = 'auto';
 export const GEMINI_MODEL_ALIAS_PRO = 'pro';
 export const GEMINI_MODEL_ALIAS_FLASH = 'flash';
 export const GEMINI_MODEL_ALIAS_FLASH_LITE = 'flash-lite';
+export const GEMINI_MODEL_ALIAS_BANANA = 'banana';
 
 export const DEFAULT_GEMINI_EMBEDDING_MODEL = 'gemini-embedding-001';
 
@@ -56,6 +59,9 @@ export function resolveModel(requestedModel: string): string {
     }
     case GEMINI_MODEL_ALIAS_FLASH_LITE: {
       return DEFAULT_GEMINI_FLASH_LITE_MODEL;
+    }
+    case GEMINI_MODEL_ALIAS_BANANA: {
+      return GEMINI_NANO_BANANA_MODEL;
     }
     default: {
       return requestedModel;
@@ -101,6 +107,8 @@ export function getDisplayString(model: string) {
       return PREVIEW_GEMINI_MODEL;
     case GEMINI_MODEL_ALIAS_FLASH:
       return PREVIEW_GEMINI_FLASH_MODEL;
+    case GEMINI_MODEL_ALIAS_BANANA:
+      return 'Gemini Nano Banana 🍌';
     default:
       return model;
   }

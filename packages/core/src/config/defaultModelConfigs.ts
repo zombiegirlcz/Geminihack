@@ -89,6 +89,12 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
         model: 'gemini-2.5-flash-lite',
       },
     },
+    'gemini-nano-banana': {
+      extends: 'chat-base-2.5',
+      modelConfig: {
+        model: 'gemini-nano-banana',
+      },
+    },
     // Bases for the internal model configs.
     'gemini-2.5-flash-base': {
       extends: 'base',

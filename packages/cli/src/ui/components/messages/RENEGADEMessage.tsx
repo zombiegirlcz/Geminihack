@@ -6,9 +6,11 @@
 
 import type React from 'react';
 import { Text, Box } from 'ink';
+import Gradient from 'ink-gradient';
 import { MarkdownDisplay } from '../../utils/MarkdownDisplay.js';
 import { ShowMoreLines } from '../ShowMoreLines.js';
 import { theme } from '../../semantic-colors.js';
+import { themeManager } from '../../themes/theme-manager.js';
 import { SCREEN_READER_MODEL_PREFIX } from '../../textConstants.js';
 import { useUIState } from '../../contexts/UIStateContext.js';
 import { useAlternateBuffer } from '../../hooks/useAlternateBuffer.js';
@@ -29,8 +31,24 @@ export const GeminiMessage: React.FC<GeminiMessageProps> = ({
   const { renderMarkdown } = useUIState();
   const prefix = '✦ ';
   const prefixWidth = prefix.length;
+  const activeTheme = themeManager.getActiveTheme();
 
   const isAlternateBuffer = useAlternateBuffer();
+
+  const Content = () => (
+    <MarkdownDisplay
+      text={text}
+      isPending={isPending}
+      availableTerminalHeight={
+        isAlternateBuffer || availableTerminalHeight === undefined
+          ? undefined
+          : Math.max(availableTerminalHeight - 1, 1)
+      }
+      terminalWidth={Math.max(terminalWidth - prefixWidth, 0)}
+      renderMarkdown={renderMarkdown}
+    />
+  );
+
   return (
     <Box flexDirection="row">
       <Box width={prefixWidth}>

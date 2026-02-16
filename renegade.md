@@ -45,3 +45,11 @@ RENEGADE KERNEL is not just a tool; it's a statement. It rejects corporate fluff
 
 - Documentation is located in the `docs/` directory.
 - All technical documentation should maintain the Renegade tone: concise and focused on functionality.
+
+## Deployment State (2026-02-16)
+
+- **Bridge:** Active on 127.0.0.1:41242 (Warm-Mode). Securely proxies requests to Kernel.
+- **Security:** Auth Token `d105...9c84` enforced via `x-renegade-auth` header.
+- **UI:** Antigravity PWA (Port 3000). Features secure link and sci-fi aesthetic.
+- **Repair Agent (Assistcore):** AST-based skill active in `.gemini/skills/repair-agent`. 
+- **MANDATE:** Standard `replace` tool is DEPRECATED. All code modifications MUST use `assistcore` (Repair Agent) to ensure structural integrity and correct indentation.

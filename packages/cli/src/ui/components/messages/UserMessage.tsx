@@ -7,7 +7,9 @@
 import type React from 'react';
 import { useMemo } from 'react';
 import { Text, Box } from 'ink';
+import Gradient from 'ink-gradient';
 import { theme } from '../../semantic-colors.js';
+import { themeManager } from '../../themes/theme-manager.js';
 import { SCREEN_READER_USER_PREFIX } from '../../textConstants.js';
 import { isSlashCommand as checkIsSlashCommand } from '../../utils/commandUtils.js';
 import {
@@ -29,8 +31,9 @@ export const UserMessage: React.FC<UserMessageProps> = ({ text, width }) => {
   const isSlashCommand = checkIsSlashCommand(text);
   const config = useConfig();
   const useBackgroundColor = config.getUseBackgroundColor();
+  const activeTheme = themeManager.getActiveTheme();
 
-  const textColor = isSlashCommand ? theme.text.accent : theme.text.secondary;
+  const textColor = isSlashCommand ? theme.text.accent : theme.text.accent;
 
   const displayText = useMemo(() => {
     if (!text) return text;
@@ -49,6 +52,21 @@ export const UserMessage: React.FC<UserMessageProps> = ({ text, width }) => {
       })
       .join('\n');
   }, [text]);
+
+  const TextComponent = ({ children }: { children: React.ReactNode }) => {
+    if (activeTheme.name === 'Renegade Dark Pink' && !isSlashCommand && typeof children === 'string') {
+      return (
+        <Gradient colors={['#FFC0CB', '#847ACE', '#4796E4']}>
+          <Text wrap="wrap">{children}</Text>
+        </Gradient>
+      );
+    }
+    return (
+      <Text wrap="wrap" color={textColor}>
+        {children}
+      </Text>
+    );
+  };
 
   return (
     <HalfLinePaddedBox
@@ -73,9 +91,7 @@ export const UserMessage: React.FC<UserMessageProps> = ({ text, width }) => {
           </Text>
         </Box>
         <Box flexGrow={1}>
-          <Text wrap="wrap" color={textColor}>
-            {displayText}
-          </Text>
+          <TextComponent>{displayText}</TextComponent>
         </Box>
       </Box>
     </HalfLinePaddedBox>

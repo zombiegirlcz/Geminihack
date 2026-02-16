@@ -14,6 +14,8 @@ import { GoogleCode } from './googlecode.js';
 import { Holiday } from './holiday.js';
 import { DefaultLight } from './default-light.js';
 import { DefaultDark } from './default.js';
+import { RenegadeDarkOrange } from './renegade-dark-orange.js';
+import { RenegadeDarkPink } from './renegade-dark-pink.js';
 import { ShadesOfPurple } from './shades-of-purple.js';
 import { XCode } from './xcode.js';
 import * as fs from 'node:fs';
@@ -63,6 +65,8 @@ class ThemeManager {
       Dracula,
       DefaultLight,
       DefaultDark,
+      RenegadeDarkOrange,
+      RenegadeDarkPink,
       GitHubDark,
       GitHubLight,
       GoogleCode,

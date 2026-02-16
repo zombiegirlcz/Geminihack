@@ -14,6 +14,7 @@ import {
   DEFAULT_GEMINI_MODEL,
   DEFAULT_GEMINI_FLASH_MODEL,
   DEFAULT_GEMINI_FLASH_LITE_MODEL,
+  GEMINI_NANO_BANANA_MODEL,
   DEFAULT_GEMINI_MODEL_AUTO,
   ModelSlashCommandEvent,
   logModelSlashCommand,
@@ -43,6 +44,7 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
       DEFAULT_GEMINI_MODEL,
       DEFAULT_GEMINI_FLASH_MODEL,
       DEFAULT_GEMINI_FLASH_LITE_MODEL,
+      GEMINI_NANO_BANANA_MODEL,
       PREVIEW_GEMINI_MODEL,
       PREVIEW_GEMINI_FLASH_MODEL,
     ];
@@ -118,6 +120,11 @@ export function ModelDialog({ onClose }: ModelDialogProps): React.JSX.Element {
         value: DEFAULT_GEMINI_FLASH_LITE_MODEL,
         title: DEFAULT_GEMINI_FLASH_LITE_MODEL,
         key: DEFAULT_GEMINI_FLASH_LITE_MODEL,
+      },
+      {
+        value: GEMINI_NANO_BANANA_MODEL,
+        title: 'gemini-nano-banana 🍌',
+        key: GEMINI_NANO_BANANA_MODEL,
       },
     ];
 
